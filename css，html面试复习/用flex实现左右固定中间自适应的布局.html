@@ -1,0 +1,42 @@
+<style type="text/css">
+  html,
+  body {
+    overflow: hidden;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .left,
+  .right {
+    /* left、right既不放大（第一个0）也不缩小（第二个0），所占空间是200px */
+    flex: 0 0 200px;
+    height: 100%;
+    background-color: #00FFFF;
+
+  }
+
+  .center {
+    /* 不给具体大小，把剩余空间全部占据 */
+    flex: 1;
+    /* min-height: 400px; */
+    background-color: #000000;
+  }
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="left"></div>
+    <div class="center"></div>
+    <div class="right"></div>
+  </div>
+</body>

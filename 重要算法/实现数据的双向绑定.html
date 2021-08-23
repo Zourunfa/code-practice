@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <div>
+        用户名：<input type="text" placeholder="username" />
+
+        密码: <input type="text" placeholder="password" />
+      </div>
+
+      <div>
+        <p>姓名:<span>{{username}}</span></p>
+        <p>密码:<span>{{password}}</span></p>
+      </div>
+    </div>
+
+    <script>
+      class MVVM {
+        constructor(el, data) {
+          this.el = document.querySelector(el);
+          this.data = data;
+
+          this.init();
+        }
+
+        init() {
+          this.initDom(this.el);
+        }
+
+        initDom(el) {
+          // console.log(el);
+          let children = el.childNodes;
+          // console.log(children);
+          children.forEach((item) => {
+            if (item.nodeType === 3) {
+              const text = item.nodeValue;
+              console.log(text);
+            }
+
+            item.childNodes && this.initDom(item);
+          });
+        }
+      }
+
+      new MVVM('#app', {
+        username: 'af',
+        password: '123',
+      });
+    </script>
+  </body>
+</html>

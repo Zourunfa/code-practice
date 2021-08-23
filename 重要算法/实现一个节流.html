@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      /* top: 50%;
+            left:50%;
+            transform: translate(-50%,-50%); */
+      border: solid 2px yellowgreen;
+      background-color: yellow;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box" draggable="true"></div>
+</body>
+<script>
+  const box = document.querySelector('.box')
+  console.log(box);
+
+  function throttle(fn, time = 1000) {
+    let timer
+
+    return function () {
+      if (timer) {
+        return
+      }
+
+      timer = setTimeout(() => {
+        fn.apply(fn, arguments)
+        timer = null
+      }, time)
+
+    }
+  }
+
+  addEventListener('drag', throttle(function (e) {
+    console.log(e);
+    console.log(e.offsetX, e.offsetY);
+  }))
+
+
+</script>
+
+</html>

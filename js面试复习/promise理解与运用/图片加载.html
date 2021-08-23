@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>af</title>
+</head>
+
+<body>
+  <script>
+    // 没有promise之前
+    // function loadImag(src, resolve, reject) {
+    //   // 下面的加载过程是需要耗时的
+    //   let image = new Image()
+    //   image.src = src
+    //   image.onload = () => {
+    //     resolve(image)
+    //   }
+    //   image.onerror = reject
+
+
+    // }
+    // loadImag('../图片懒加载/img/1.jpg',
+    //   (image) => {
+    //     // let node = document.createElement('img')
+    //     // node.src = image.src
+    //     document.body.appendChild(image)
+    //     console.log('图片加载完成');
+    //   },
+    //   () => {
+    //     console.log('加载失败');
+    //   })
+
+    // console.log('同步代码');
+
+
+
+    // 使用promise异步加载图片
+
+    // 使用promise异步加载图片
+
+    function loadImag(src) {
+      return new Promise((resolve, reject) => {
+        let image = new Image()
+        image.src = src
+        console.log(image);
+        image.onload = () => {
+          resolve(image);
+        };
+        image.onerror = reject
+        document.body.appendChild(image)
+      })
+    }
+
+    loadImag('../图片懒加载/img/1.jpg').then(img => {
+      // console.log(img);
+      console.log(`图片加载成功它的宽为: ${window.getComputedStyle(img).width}`);
+    })
+    console.log('同步代码');
+
+  </script>
+</body>
+
+</html>

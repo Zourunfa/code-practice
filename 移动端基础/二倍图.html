@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- 问题：如果一个50*50px的图片放到手机中，占有的物理像素点是100*100，会造成图片模糊
+    解决方法：使用一个本身就是100x100px的图片进行制作，替换原来的图片，然后设置图片的尺寸
+    为50*50px-->
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* 背景图处理 */
+    .box {
+      width: 50px;
+      height: 50px;
+      border: 1px solid blue;
+      background: url(./imgs/路由器wifi.jpg) no-repeat;
+      background-size: 50px 50px;
+    }
+  </style>
+  <body>
+    <img src="./imgs/路由器wifi.jpg" alt="" />
+    <div class="box"></div>
+  </body>
+</html>

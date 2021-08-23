@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <main>
+    <a href="https://www.nihaoma.com/1.jpg"></a>
+    <a href="https://oss.nihaoma.com/2.jpg"></a>
+    <a href="https://cdn.nihaoma.com/3.jpg"></a>
+    <a href="https://nihaoma.com/4.jpg"></a>
+  </main>
+  <script>
+    let main = document.querySelector('main')
+    let reg = /https:\/\/([a-z]+)?(?<!oss)\..+?(?=\/)/gi
+
+    main.innerHTML = main.innerHTML.replace(reg, (v) => {
+      return "https://oss.nihaoma.com"
+    })
+  </script>
+</body>
+
+</html>

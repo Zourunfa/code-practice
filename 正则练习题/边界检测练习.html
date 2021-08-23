@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <input type="text" name="user">
+  <span></span>
+  <script>
+    let input = document.querySelector("[name='user']")
+    let span = document.querySelector('span')
+    console.log(input);
+    input.addEventListener('keyup', function () {
+      // console.log(this.value.match(/^\w{3,6}$/));
+      if (this.value.match(/^\w{3,6}$/)) {
+        span.innerHTML = '正确格式'
+      } else {
+        span.innerHTML = '请输入3-6位字符'
+      }
+    })
+  </script>
+</body>
+
+</html>

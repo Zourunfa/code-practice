@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>proxy实现双向绑定</title>
+</head>
+<body>
+    <input type="text" id="input"/>
+    <h1 id="h1"></h1>
+    <script>
+        let inp = document.querySelector('#input')
+        let h1 = document.querySelector('#h1')
+
+
+        let obj = {
+            val:'1123'
+        }
+
+        let proxyObj = new Proxy(obj,{
+            set(target,attr,value){
+                target[attr] = value 
+                inp.value = value
+                h1.innerHTML = value
+            }
+        })
+
+        proxyObj.val = obj.val //实现set，使输入框和p标签都显示obj.val值
+        
+        inp.addEventListener('input',function(){
+            console.log(inp.value);
+            proxyObj.val = inp.luvae  //数据同时变化
+        })
+
+        
+    </script>
+</body>
+</html>

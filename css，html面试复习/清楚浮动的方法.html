@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .fahter {
+      width: 400px;
+      border: 1px solid deeppink;
+      /* 通过父元素触发BFC方式，实现清除浮动
+        缺点就是内容增多的时候容易造成不会自动换行导致内容被隐藏
+
+        复习一下overflown的三个作用
+        1，清楚浮动
+        2，解决外边距塌陷
+        3，隐藏溢出的内联元素
+       */
+      /* overflow: auto; */
+
+    }
+
+    .big {
+      width: 200px;
+      height: 200px;
+      background: darkorange;
+      float: left;
+    }
+
+    .small {
+      width: 120px;
+      height: 120px;
+      background: darkmagenta;
+      float: left;
+    }
+
+    .footer {
+      width: 900px;
+      height: 100px;
+      background: darkslateblue;
+    }
+
+    /* .clear {
+      clear: both;
+    } */
+
+    .clearfix::after {
+      content: '';
+      clear: both;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="fahter  clearfix">
+    <div class="big">big</div>
+    <div class="small">small</div>
+    <!-- <div class="clear">额外标签法</div> -->
+  </div>
+  <div class="footer"></div>
+</body>
+
+</html>

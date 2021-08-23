@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+    function set(key, value, expired) {
+      // 设置好要存储的值
+      let source = this.source;
+      source[key] = JSON.stringify(value)
+
+
+      //根据设置好存储值的key 再在localStorage设置另一个关联它的最大生存时间
+      if (expired) {
+        source[`${key}__expires__`] = Date.now() + 1000 * 60 * expired
+      }
+      return value
+    }
+
+    function get(key) {
+      // 取出当前key的最大生存周期时间
+      let source = this.source
+      expired = source[`${key}__expires__`] || Date.now + 1
+
+      // 比较当前时间是否过期
+      const now = Date.now()
+      if (now > expired) {
+        this.remove(key)
+        return;
+      }
+      const value = source[key] ? JSON.parse(source[key]) : source[key];
+
+    }
+
+    // 重写remove方法：
+    // 删除key和关联它的另一个时间key__Expires__
+    function remove(key) {
+      const res = this.source
+      value = data[key]
+      delete data[`${key}__expires__`]
+      return value
+    }
+
+  </script>
+</body>
+
+</html>

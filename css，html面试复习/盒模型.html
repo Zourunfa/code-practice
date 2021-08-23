@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!-- 
+    css盒模型:标准模型+IE模型 
+    什么是盒模型： 盒模型，包含了元素内容（content),内边距（padding）,边框(border),外边距(margin)
+
+
+    W3c盒子模型（标准盒模型）
+
+
+    标准模型和IE模型的区别：
+    计算宽度和高度不同
+    标准盒模型 ：
+      盒子的总宽度/高度 = width/height + padding + border + margin
+      (width和height只是内容高度，不包含padding和border的值)
+    怪异盒模型:
+      盒子总宽度/高度 = width/height + margin (width和height包含了padding
+      和border的值)
+
+    
+    css如何设置这两种模型
+    标准：box-sizing:content-box (浏览器默认设置)
+    IE: box-sizing:boder-box
+
+
+    js如何获取盒模型对应的宽和高
+    1，dom.style.width/height 只能取到行内样式的宽和高，style标签中的link外链的样式娶不到
+    2，dom.currentStyle.width/height (只有IE兼容) 取到的是追踪渲染后的宽和高
+    3, window.getComputedStyle(dom).width/height IE9和 多浏览器支持
+    4, dom.getBoundingClientRect().width/height  也是得到渲染后的宽和高，大多数浏览器支持
+    5, dom.offsetWidth/offsetHeaght  包括高度(宽度)，内边距和边框，不包括外边距最常用
+
+   -->
+
+
+  <!-- 
+     BFC
+
+     
+     BFC：块级格式化上下文
+     BFC的基本概念： BFC是css布局的一个概念，是一块独立的渲染区域，是一个环境，里面的元素
+     不会影响到外面的元素。父子元素和兄弟元素的边距重叠，重叠原则取最大值。空元素的边距
+     重叠是取margin和padding的最大值
+
+     BFC的原理（渲染规则|布局规则）
+     1，内部的Box会在垂直方向，从顶部开始一个接着一个地放置
+     2，Box垂直方向的距离由margin决定，属于同一个BFC的两个相邻的BOX的margin会发生重叠
+     3，每个元素的margin Box的左边，与包含块border box的左边相接触
+
+
+
+    -->
+
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=4, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>all we need is love</h1>
+  <h2>all we need is love</h2>
+  <h3>all we need is love</h3>
+  <script>
+    let reg = /<(h[1-6])>([\s\S]+?)<\/\1>/gi
+    const content = document.body.innerHTML.matchAll(reg)
+    // console.log(content);
+    let res = []
+    for (const it of content) {
+      // console.log(it);
+      res.push(it[2])
+    }
+    console.log(res);
+
+
+    let str = 'woainiw'
+
+
+    // 为低端浏览器自定义原型方法matchALl
+    String.prototype.matchAll = function (reg) {
+      let res = this.match(reg)
+      if (res) {
+        let str = this.replace(res[0], '^'.repeat(res[0].length))
+        let match = str.matchAll(reg) || []
+        return [res, ...match]
+      }
+    }
+
+    console.log(str.matchAll(/(w)/i));
+  </script>
+</body>
+
+</html>

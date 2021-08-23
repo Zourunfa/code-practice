@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <main>
+    <span>vue</span>
+    <span>react</span>
+    <span>javascript</span>
+  </main>
+
+  <script>
+    // 将span标签换成h4 并且设置高亮 后面加上 - 阿锋不知道
+    const main = document.querySelector('main')
+    const reg = /<span>([\s\S]+?)<\/span>/gi//注意你这里如果不用问号禁止贪婪就会一起将三个span标签配对进去
+
+
+    main.innerHTML = main.innerHTML.replace(reg, function (p, p1) {
+
+      return `<h2 style="color:red">${p1}-阿锋不知道</h2>`
+    })
+
+
+  </script>
+</body>
+
+</html>

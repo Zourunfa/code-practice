@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    /* 首先如果想要设置居中,width是必须设置的,如果不设置width元素,
+    那么块级元素一定会占据100%的宽度,margin:0 auto的auto是指平分剩余空间,
+    比如宽度为200,父元素的宽度为1000,那么auto就是指水平方向平分剩余的宽度(1000-200/2)
+ */
+    /* .main {
+      height: 200px;
+      width: 200px;
+      background: red;
+      margin: 0 auto;
+    } */
+
+
+    /* 那么如果只有一侧设置了auto会产生什么效果 */
+
+    .main {
+      height: 200px;
+      width: 200px;
+      background: red;
+      margin-left: auto;
+    }
+
+    /* 他竟然靠在了右侧 */
+    /* 因为他只设置了左侧为auto,那么父元素剩余的空间都会分给左侧,就实现了float:left;的效果
+做到了这一步我感觉实在是太神奇了啊,他竟然可以代替浮动的效果 */
+
+    /* 那么如何垂直方向居中呢
+
+这里面我要强调一下,垂直方向不可以margin: auto 0
+主要的原因就是垂直方向,我们没有剩余的空间
+那么我们就不能垂直方向居中了吗???,当然是可以的,我们来试一 */
+  </style>
+</head>
+
+<body>
+  <div class="main">
+
+  </div>
+</body>
+
+</html>

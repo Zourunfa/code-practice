@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #main {
+      height: 240px;
+      width: 100px;
+      /* background-color: red; */
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+    }
+
+    input {
+      border: 5px solid blueviolet;
+      width: 200px;
+      height: 30px;
+      border-radius: 4px;
+      /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+      animation: am 0.5s linear;
+    }
+
+    @keyframes am {
+      25% {
+        border: 5px solid green;
+        /* width: 205px;
+        height: 32px; */
+      }
+
+      50% {
+        border: 5px solid blue;
+        /* width: 210px;
+        height: 34px; */
+      }
+
+      75% {
+        border: 5px solid purple;
+        /* width: 215px;
+        height: 36px; */
+      }
+    }
+  </style>
+</head>
+
+
+
+<body>
+  <div id="container">
+    <div id="main">
+      <input type="text" />
+    </div>
+  </div>
+  <script>
+    const inp = document.querySelector('input')
+    // console.log(inp);
+
+    function debounced(fn, delay = 500) {
+      let timer = null
+
+      return function () {
+        if (timer) {
+          clearInterval(timer)
+        }
+        // console.log(timer);
+        timer = setTimeout(() => {
+          fn.apply(fn, arguments)
+          timer = null
+        }, delay)
+      }
+    }
+
+    document.addEventListener('keyup', debounced((e) => {
+      console.log(inp.value);
+    }))
+
+  </script>
+</body>
+
+</html>

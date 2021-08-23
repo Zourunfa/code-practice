@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+
+  <script>
+    function set(key, value, expired) {
+      // 设置好要存储的值
+      console.log(key, value);
+      localStorage.setItem(JSON.stringify(key), JSON.stringify(value))
+
+      //根据设置好存储值的key 再在localStorage设置另一个关联它的最大生存时间
+      if (expired) {
+        localStorage.setItem(`${key}__expires__`, Date.now() + 1000 * 60 * expired)
+      }
+      return value
+    }
+
+    set('key', 'wangfeng', 10)
+
+    function get(key) {
+      // 取出当前key的最大生存周期时间
+      let expired = localStorage.getItem(`${key}__expires__`) || Date.now() + 1
+
+      // 比较当前时间是否过期
+      let now = Date.now()
+      if (now > expired) {
+        localStorage.removeItem(JSON.stringify(key))
+        localStorage.removeItem(`${key}__expires__`)
+        return
+      }
+      return localStorage.getItem(JSON.stringify(key)) ? JSON.parse(localStorage.getItem(JSON.stringify(key))) : localStorage.getItem(JSON.stringify(key))
+
+    }
+
+
+    console.log(get('key'));
+
+
+  </script>
+</body>
+
+</html>
