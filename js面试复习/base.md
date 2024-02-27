@@ -754,3 +754,373 @@ function getJSON(url) {
 ```
 
 ### 17. JavaScript 为什么要进行变量提升，它导致了什么问题？
+### 17. JavaScript 为什么要进行变量提升，它导致了什么问题？
+
+变量提升的表现是，无论在函数中何处位置声明的变量，好像都被提升到了函数的首部，可以在变量声明前访问到而不会报错。
+
+造成变量声明提升的**本质原因**是 js 引擎在代码执行前有一个解析的过程，创建了执行上下文，初始化了一些代码执行时需要用到的对象。当访问一个变量时，会到当前执行上下文中的作用域链中去查找，而作用域链的首端指向的是当前执行上下文的变量对象，这个变量对象是执行上下文的一个属性，它包含了函数的形参、所有的函数和变量声明，这个对象的是在代码解析的时候创建的。
+
+首先要知道，JS 在拿到一个变量或者一个函数的时候，会有两步操作，即解析和执行。
+
+- **在解析阶段**，JS 会检查语法，并对函数进行预编译。解析的时候会先创建一个全局执行上下文环境，先把代码中即将执行的变量、函数声明都拿出来，变量先赋值为 undefined，函数先声明好可使用。在一个函数执行之前，也会创建一个函数执行上下文环境，跟全局执行上下文类似，不过函数执行上下文会多出 this、arguments 和函数的参数。
+
+- - 全局上下文：变量定义，函数声明
+  - 函数上下文：变量定义，函数声明，this，arguments
+
+- **在执行阶段**，就是按照代码的顺序依次执行。
+
+那为什么会进行变量提升呢？主要有以下两个原因：
+
+- 提高性能
+- 容错性更好
+
+**（1）提高性能**
+
+在 JS 代码执行之前，会进行语法检查和预编译，并且这一操作只进行一次。这么做就是为了提高性能，如果没有这一步，那么每次执行代码前都必须重新解析一遍该变量（函数），而这是没有必要的，因为变量（函数）的代码并不会改变，解析一遍就够了。
+
+在解析的过程中，还会为函数生成预编译代码。在预编译时，会统计声明了哪些变量、创建了哪些函数，并对函数的代码进行压缩，去除注释、不必要的空白等。这样做的好处就是每次执行函数时都可以直接为该函数分配栈空间（不需要再解析一遍去获取代码中声明了哪些变量，创建了哪些函数），并且因为代码压缩的原因，代码执行也更快了。
+
+**（2）容错性更好**
+
+变量提升可以在一定程度上提高 JS 的容错性，看下面的代码：
+
+```
+a = 1;
+var a;
+console.log(a);
+```
+
+如果没有变量提升，这两行代码就会报错，但是因为有了变量提升，这段代码就可以正常执行。
+
+虽然，在可以开发过程中，可以完全避免这样写，但是有时代码很复杂的时候。可能因为疏忽而先使用后定义了，这样也不会影响正常使用。由于变量提升的存在，而会正常运行。
+
+**总结：**
+
+- 解析和预编译过程中的声明提升可以提高性能，让函数可以在执行时预先为变量分配栈空间
+- 声明提升还可以提高 JS 代码的容错性，使一些不规范的代码也可以正常执行
+
+变量提升虽然有一些优点，但是他也会造成一定的问题，在 ES6 中提出了 let、const 来定义变量，它们就没有变量提升的机制。下面看一下变量提升可能会导致的问题：
+
+```
+var tmp = new Date();
+
+function fn(){
+    console.log(tmp);
+    if(false){
+        var tmp = 'hello world';
+    }
+}
+
+fn();  // undefined
+```
+
+在这个函数中，原本是要打印出外层的 tmp 变量，但是因为变量提升的问题，内层定义的 tmp 被提到函数内部的最顶部，相当于覆盖了外层的 tmp，所以打印结果为 undefined。
+
+```
+var tmp = 'hello world';
+
+for (var i = 0; i < tmp.length; i++) {
+    console.log(tmp[i]);
+}
+
+console.log(i); // 11
+```
+
+由于遍历时定义的 i 会变量提升成为一个全局变量，在函数结束之后不会被销毁，所以打印出来 11。
+
+### 19. **ES6**模块与**CommonJS**模块有什么异同？
+
+ES6 Module 和 CommonJS 模块的区别：
+
+- CommonJS 是对模块的浅拷⻉，ES6 Module 是对模块的引⽤，即 ES6 Module 只存只读，不能改变其值，也就是指针指向不能变，类似 const；
+- import 的接⼝是 read-only（只读状态），不能修改其变量值。 即不能修改其变量的指针指向，但可以改变变量内部指针指向，可以对 commonJS 对重新赋值（改变指针指向），但是对 ES6 Module 赋值会编译报错。
+
+ES6 Module 和 CommonJS 模块的共同点：
+
+- CommonJS 和 ES6 Module 都可以对引⼊的对象进⾏赋值，即对对象内部属性的值进⾏改变。
+
+### 20. 常见的 DOM 操作有哪些
+
+#### 1）DOM 节点的获取
+
+DOM 节点的获取的 API 及使用：
+
+```
+getElementById // 按照 id 查询
+getElementsByTagName // 按照标签名查询
+getElementsByClassName // 按照类名查询
+querySelectorAll // 按照 css 选择器查询
+
+// 按照 id 查询
+var imooc = document.getElementById('imooc') // 查询到 id 为 imooc 的元素
+// 按照标签名查询
+var pList = document.getElementsByTagName('p')  // 查询到标签为 p 的集合
+console.log(divList.length)
+console.log(divList[0])
+// 按照类名查询
+var moocList = document.getElementsByClassName('mooc') // 查询到类名为 mooc 的集合
+// 按照 css 选择器查询
+var pList = document.querySelectorAll('.mooc') // 查询到类名为 mooc 的集合
+```
+
+#### 2）DOM 节点的创建
+
+**创建一个新节点，并把它添加到指定节点的后面。** 已知的 HTML 结构如下：
+
+```
+<html>
+  <head>
+    <title>DEMO</title>
+  </head>
+  <body>
+    <div id="container">
+      <h1 id="title">我是标题</h1>
+    </div>
+  </body>
+</html>
+```
+
+要求添加一个有内容的 span 节点到 id 为 title 的节点后面，做法就是：
+
+```
+// 首先获取父节点
+var container = document.getElementById('container')
+// 创建新节点
+var targetSpan = document.createElement('span')
+// 设置 span 节点的内容
+targetSpan.innerHTML = 'hello world'
+// 把新创建的元素塞进父节点里去
+container.appendChild(targetSpan)
+```
+
+#### 3）DOM 节点的删除
+
+**删除指定的 DOM 节点，**已知的 HTML 结构如下：
+
+```
+<html>
+  <head>
+    <title>DEMO</title>
+  </head>
+  <body>
+    <div id="container">
+      <h1 id="title">我是标题</h1>
+    </div>
+  </body>
+</html>
+```
+
+需要删除 id 为 title 的元素，做法是：
+
+```
+// 获取目标元素的父元素
+var container = document.getElementById('container')
+// 获取目标元素
+var targetNode = document.getElementById('title')
+// 删除目标元素
+container.removeChild(targetNode)
+```
+
+或者通过子节点数组来完成删除：
+
+```
+// 获取目标元素的父元素
+var container = document.getElementById('container')
+// 获取目标元素
+var targetNode = container.childNodes[1]
+// 删除目标元素
+container.removeChild(targetNode)
+```
+
+#### 4）修改 DOM 元素
+
+修改 DOM 元素这个动作可以分很多维度，比如说移动 DOM 元素的位置，修改 DOM 元素的属性等。
+
+**将指定的两个 DOM 元素交换位置，** 已知的 HTML 结构如下：
+
+```
+<html>
+  <head>
+    <title>DEMO</title>
+  </head>
+  <body>
+    <div id="container">
+      <h1 id="title">我是标题</h1>
+      <p id="content">我是内容</p>
+    </div>
+  </body>
+</html>
+```
+
+现在需要调换 title 和 content 的位置，可以考虑 insertBefore 或者 appendChild：
+
+```
+// 获取父元素
+var container = document.getElementById('container')
+
+// 获取两个需要被交换的元素
+var title = document.getElementById('title')
+var content = document.getElementById('content')
+// 交换两个元素，把 content 置于 title 前面
+container.insertBefore(content, title)
+```
+
+### 21. use strict 是什么意思 ? 使用它区别是什么？
+
+use strict 是一种 ECMAscript5 添加的（严格模式）运行模式，这种模式使得 Javascript 在更严格的条件下运行。设立严格模式的目的如下：
+
+- 消除 Javascript 语法的不合理、不严谨之处，减少怪异行为;
+- 消除代码运行的不安全之处，保证代码运行的安全；
+- 提高编译器效率，增加运行速度；
+- 为未来新版本的 Javascript 做好铺垫。
+
+区别：
+
+- 禁止使用 with 语句。
+- 禁止 this 关键字指向全局对象。
+- 对象不能有重名的属性。
+
+### 23. 强类型语言和弱类型语言的区别
+
+- **强类型语言**：强类型语言也称为强类型定义语言，是一种总是强制类型定义的语言，要求变量的使用要严格符合定义，所有变量都必须先定义后使用。Java 和 C++等语言都是强制类型定义的，也就是说，一旦一个变量被指定了某个数据类型，如果不经过强制转换，那么它就永远是这个数据类型了。例如你有一个整数，如果不显式地进行转换，你不能将其视为一个字符串。
+- **弱类型语言**：弱类型语言也称为弱类型定义语言，与强类型定义相反。JavaScript 语言就属于弱类型语言。简单理解就是一种变量类型可以被忽略的语言。比如 JavaScript 是弱类型定义的，在 JavaScript 中就可以将字符串'12'和整数 3 进行连接得到字符串'123'，在相加的时候会进行强制类型转换。
+
+两者对比：强类型语言在速度上可能略逊色于弱类型语言，但是强类型语言带来的严谨性可以有效地帮助避免许多错误。
+
+### 25. for...in 和 for...of 的区别
+
+for…of 是 ES6 新增的遍历方式，允许遍历一个含有 iterator 接口的数据结构（数组、对象等）并且返回各项的值，和 ES3 中的 for…in 的区别如下
+
+- for…of 遍历获取的是对象的键值，for…in 获取的是对象的键名；
+- for… in 会遍历对象的整个原型链，性能非常差不推荐使用，而 for … of 只遍历当前对象不会遍历原型链；
+- 对于数组的遍历，for…in 会返回数组中所有可枚举的属性(包括原型链上可枚举的属性)，for…of 只返回数组的下标对应的属性值；
+
+**总结：** for...in 循环主要是为了遍历对象而生，不适用于遍历数组；for...of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象。
+
+### 26. 如何使用 for...of 遍历对象
+
+for…of 是作为 ES6 新增的遍历方式，允许遍历一个含有 iterator 接口的数据结构（数组、对象等）并且返回各项的值，普通的对象用 for..of 遍历是会报错的。
+
+如果需要遍历的对象是类数组对象，用 Array.from 转成数组即可。
+
+```
+var obj = {
+    0:'one',
+    1:'two',
+    length: 2
+};
+obj = Array.from(obj);
+for(var k of obj){
+    console.log(k)
+}
+```
+
+如果不是类数组对象，就给对象添加一个[Symbol.iterator]属性，并指向一个迭代器即可。
+
+```
+//方法一：
+var obj = {
+    a:1,
+    b:2,
+    c:3
+};
+
+obj[Symbol.iterator] = function(){
+    var keys = Object.keys(this);
+    var count = 0;
+    return {
+        next(){
+            if(count<keys.length){
+                return {value: obj[keys[count++]],done:false};
+            }else{
+                return {value:undefined,done:true};
+            }
+        }
+    }
+};
+
+for(var k of obj){
+    console.log(k);
+}
+
+
+// 方法二
+var obj = {
+    a:1,
+    b:2,
+    c:3
+};
+obj[Symbol.iterator] = function*(){
+    var keys = Object.keys(obj);
+    for(var k of keys){
+        yield [k,obj[k]]
+    }
+};
+
+for(var [k,v] of obj){
+    console.log(k,v);
+}
+```
+
+### 27. ajax、axios、fetch 的区别
+
+**（1）AJAX**
+
+Ajax 即“AsynchronousJavascriptAndXML”（异步 JavaScript 和 XML），是指一种创建交互式[网页](https://link.zhihu.com/?target=https%3A//baike.baidu.com/item/%E7%BD%91%E9%A1%B5)应用的网页开发技术。它是一种在无需重新加载整个网页的情况下，能够更新部分网页的技术。通过在后台与服务器进行少量数据交换，Ajax 可以使网页实现异步更新。这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。传统的网页（不使用 Ajax）如果需要更新内容，必须重载整个网页页面。其缺点如下：
+
+- 本身是针对 MVC 编程，不符合前端 MVVM 的浪潮
+- 基于原生 XHR 开发，XHR 本身的架构不清晰
+- 不符合关注分离（Separation of Concerns）的原则
+- 配置和调用方式非常混乱，而且基于事件的异步模型不友好。
+
+**（2）Fetch**
+
+fetch 号称是 AJAX 的替代品，是在 ES6 出现的，使用了 ES6 中的 promise 对象。Fetch 是基于 promise 设计的。Fetch 的代码结构比起 ajax 简单多。**fetch 不是 ajax 的进一步封装，而是原生 js，没有使用 XMLHttpRequest 对象**。
+
+fetch 的优点：
+
+- 语法简洁，更加语义化
+- 基于标准 Promise 实现，支持 async/await
+- 更加底层，提供的 API 丰富（request, response）
+- 脱离了 XHR，是 ES 规范里新的实现方式
+
+fetch 的缺点：
+
+- fetch 只对网络请求报错，对 400，500 都当做成功的请求，服务器返回 400，500 错误码时并不会 reject，只有网络错误这些导致请求不能完成时，fetch 才会被 reject。
+- fetch 默认不会带 cookie，需要添加配置项： fetch(url, {credentials: 'include'})
+- fetch 不支持 abort，不支持超时控制，使用 setTimeout 及 Promise.reject 的实现的超时控制并不能阻止请求过程继续在后台运行，造成了流量的浪费
+- fetch 没有办法原生监测请求的进度，而 XHR 可以
+
+**（3）Axios**
+
+Axios 是一种基于 Promise 封装的 HTTP 客户端，其特点如下：
+
+- 浏览器端发起 XMLHttpRequests 请求
+- node 端发起 http 请求
+- 支持 Promise API
+- 监听请求和返回
+- 对请求和返回进行转化
+- 取消请求
+- 自动转换 json 数据
+- 客户端支持抵御 XSRF 攻击
+
+### 28. 数组的遍历方法有哪些
+
+| **方法**                  | **是否改变原数组**   | **特点**                                                     |
+| ------------------------- | -------------------- | ------------------------------------------------------------ |
+| forEach()                 | 取决于元素的数据类型 | 数组方法，没有返回值，是否会改变原数组取决于数组元素的类型是基本类型还是引用类型，详细解释可参考文章：[《forEach 到底可以改变原数组吗》](https://blog.csdn.net/weixin_44628533/article/details/102495129) |
+| map()                     | 否                   | 数组方法，不改变原数组，有返回值，可链式调用                 |
+| filter()                  | 否                   | 数组方法，过滤数组，返回包含符合条件的元素的数组，可链式调用 |
+| for...of                  | 否                   | for...of 遍历具有 Iterator 迭代器的对象的属性，返回的是数组的元素、对象的属性值，不能遍历普通的 obj 对象，将异步循环变成同步循环 |
+| every() 和 some()         | 否                   | 数组方法，some()只要有一个是 true，便返回 true；而 every()只要有一个是 false，便返回 false. |
+| find() 和 findIndex()     | 否                   | 数组方法，find()返回的是第一个符合条件的值；findIndex()返回的是第一个返回条件的值的索引值 |
+| reduce() 和 reduceRight() | 否                   | 数组方法，reduce()对数组正序操作；reduceRight()对数组逆序操作 |
+
+遍历方法的详细解释：[《细数 JavaScript 中那些遍历和循环》](https://cuggz.blog.csdn.net/article/details/107649549)
+
+### 29. forEach 和 map 方法有什么区别
+
+这方法都是用来遍历数组的，两者区别如下：
+
+- forEach()方法会针对每一个元素执行提供的函数，该方法没有返回值，是否会改变原数组取决于数组元素的类型是基本类型还是引用类型，详细解释可参考文章：[《forEach 到底可以改变原数组吗》](https://blog.csdn.net/weixin_44628533/article/details/102495129)
+- map()方法不会改变原数组的值，返回一个新数组，新数组中的值为原数组调用函数处理之后的值；
