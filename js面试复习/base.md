@@ -1124,3 +1124,61 @@ Axios 是一种基于 Promise 封装的 HTTP 客户端，其特点如下：
 
 - forEach()方法会针对每一个元素执行提供的函数，该方法没有返回值，是否会改变原数组取决于数组元素的类型是基本类型还是引用类型，详细解释可参考文章：[《forEach 到底可以改变原数组吗》](https://blog.csdn.net/weixin_44628533/article/details/102495129)
 - map()方法不会改变原数组的值，返回一个新数组，新数组中的值为原数组调用函数处理之后的值；
+
+
+
+## 四、原型与原型链
+
+### 1. 对原型、原型链的理解
+
+每个实例对象都会有__proto__属性,其被称为隐式原型
+每一个构造函数都有prototype属性，被称为显示原型
+每一个实例对象的隐式原型__proto__属性指向自身构造函数的显式原型prototype
+每一个构造函数的prototype也是一个对象，它的__proto__属性又指向它上一级的构造函数（原型链）
+
+
+
+
+
+
+在 JavaScript 中是使用构造函数来新建一个对象的，每一个构造函数的内部都有一个 prototype 属性，它的属性值是一个对象，这个对象包含了可以由该构造函数的所有实例共享的属性和方法。当使用构造函数新建一个对象后，在这个对象的内部将包含一个指针，这个指针指向构造函数的 prototype 属性对应的值，在 ES5 中这个指针被称为对象的原型。一般来说不应该能够获取到这个值的，但是现在浏览器中都实现了 **proto** 属性来访问这个属性，但是最好不要使用这个属性，因为它不是规范中规定的。**ES5 中新增了一个 Object.getPrototypeOf() 方法，可以通过这个方法来获取对象的原型。**
+
+当访问一个对象的属性时，如果这个对象内部不存在这个属性，那么它就会去它的原型对象里找这个属性，这个原型对象又会有自己的原型，于是就这样一直找下去，也就是原型链的概念。原型链的尽头一般来说都是 Object.prototype 所以这就是新建的对象为什么能够使用 toString() 等方法的原因。
+
+**特点：**JavaScript 对象是通过引用来传递的，创建的每个新对象实体中并没有一份属于自己的原型副本。当修改原型时，与之相关的对象也会继承这一改变。
+
+![image](https://cdn.nlark.com/yuque/0/2021/png/1500604/1615475711487-c474af95-b5e0-4778-a90b-9484208d724d.png)
+
+### 3. 原型链指向
+
+```javascript
+p.__proto__; // Person.prototype
+Person.prototype.__proto__; // Object.prototype
+p.__proto__.__proto__; //Object.prototype
+p.__proto__.constructor.prototype.__proto__; // Object.prototype
+Person.prototype.constructor.prototype.__proto__; // Object.prototype
+p1.__proto__.constructor; // Person
+Person.prototype.constructor; // Person
+```
+
+### 4. 原型链的终点是什么？如何打印出原型链的终点？
+
+由于`Object`是构造函数，原型链终点是`Object.prototype.__proto__`，而`Object.prototype.__proto__=== null // true`，所以，原型链的终点是`null`。原型链上的所有原型都是对象，所有的对象最终都是由`Object`构造的，而`Object.prototype`的下一级是`Object.prototype.__proto__`。
+
+![image](https://cdn.nlark.com/yuque/0/2020/jpeg/1500604/1605247722640-5bcb9156-a8b4-4d7c-83d7-9ff80930e1de.jpeg)
+
+### 5. 如何获得对象非原型链上的属性？
+
+使用后`hasOwnProperty()`方法来判断属性是否属于原型链的属性：
+
+```javascript
+function iterate(obj) {
+  var res = [];
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) res.push(key + ": " + obj[key]);
+  }
+  return res;
+}
+```
+
+## 五、执行上下文/作用域链/闭包
