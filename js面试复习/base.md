@@ -1225,3 +1225,415 @@ this 是执行上下文中的一个属性，它指向最后一次调用这个方
 - 第四种是 **apply 、 call 和 bind 调用模式**，这三个方法都可以显示的指定调用函数的 this 指向。其中 apply 方法接收两个参数：一个是 this 绑定的对象，一个是参数数组。call 方法接收的参数，第一个是 this 绑定的对象，后面的其余参数是传入函数执行的参数。也就是说，在使用 call() 方法时，传递给函数的参数必须逐个列举出来。bind 方法通过传入一个对象，返回一个 this 绑定了传入对象的新函数。这个函数的 this 指向除了使用 new 时会被改变，其他情况下都不会改变。
 
 这四种方式，使用构造器调用模式的优先级最高，然后是 apply、call 和 bind 调用模式，然后是方法调用模式，然后是函数调用模式。
+### 4. Promise 的基本用法
+
+#### （1）创建 Promise 对象
+
+Promise 对象代表一个异步操作，有三种状态：pending（进行中）、fulfilled（已成功）和 rejected（已失败）。
+
+Promise 构造函数接受一个函数作为参数，该函数的两个参数分别是`resolve`和`reject`。
+
+```
+const promise = new Promise(function(resolve, reject) {
+  // ... some code
+  if (/* 异步操作成功 */){
+    resolve(value);
+  } else {
+    reject(error);
+  }
+});
+```
+
+**一般情况下都会使用 **`new Promise()`** 来创建 promise 对象，但是也可以使用 **`promise.resolve`** 和 **`promise.reject`** 这两个方法：**
+
+- **Promise.resolve**
+
+`Promise.resolve(value)`的返回值也是一个 promise 对象，可以对返回值进行.then 调用，代码如下：
+
+```
+Promise.resolve(11).then(function(value){
+  console.log(value); // 打印出11
+});
+```
+
+`resolve(11)`代码中，会让 promise 对象进入确定(`resolve`状态)，并将参数`11`传递给后面的`then`所指定的`onFulfilled` 函数；
+
+创建 promise 对象可以使用`new Promise`的形式创建对象，也可以使用`Promise.resolve(value)`的形式创建 promise 对象；
+
+- **Promise.reject**
+
+`Promise.reject` 也是`new Promise`的快捷形式，也创建一个 promise 对象。代码如下：
+
+```
+Promise.reject(new Error(“我错了，请原谅俺！！”));
+```
+
+就是下面的代码 new Promise 的简单形式：
+
+```
+new Promise(function(resolve,reject){
+   reject(new Error("我错了，请原谅俺！！"));
+});
+```
+
+下面是使用 resolve 方法和 reject 方法：
+
+```
+function testPromise(ready) {
+  return new Promise(function(resolve,reject){
+    if(ready) {
+      resolve("hello world");
+    }else {
+      reject("No thanks");
+    }
+  });
+};
+// 方法调用
+testPromise(true).then(function(msg){
+  console.log(msg);
+},function(error){
+  console.log(error);
+});
+```
+
+上面的代码的含义是给`testPromise`方法传递一个参数，返回一个 promise 对象，如果为`true`的话，那么调用 promise 对象中的`resolve()`方法，并且把其中的参数传递给后面的`then`第一个函数内，因此打印出 “`hello world`”, 如果为`false`的话，会调用 promise 对象中的`reject()`方法，则会进入`then`的第二个函数内，会打印`No thanks`；
+
+#### （2）Promise 方法
+
+Promise 有五个常用的方法：then()、catch()、all()、race()、finally。下面就来看一下这些方法。
+
+1. **then()**
+
+当 Promise 执行的内容符合成功条件时，调用`resolve`函数，失败就调用`reject`函数。Promise 创建完了，那该如何调用呢？
+
+```
+promise.then(function(value) {
+  // success
+}, function(error) {
+  // failure
+});
+```
+
+`then`方法可以接受两个回调函数作为参数。第一个回调函数是 Promise 对象的状态变为`resolved`时调用，第二个回调函数是 Promise 对象的状态变为`rejected`时调用。其中第二个参数可以省略。
+
+`then`方法返回的是一个新的 Promise 实例（不是原来那个 Promise 实例）。因此可以采用链式写法，即`then`方法后面再调用另一个 then 方法。
+
+当要写有顺序的异步事件时，需要串行时，可以这样写：
+
+```
+let promise = new Promise((resolve,reject)=>{
+    ajax('first').success(function(res){
+        resolve(res);
+    })
+})
+promise.then(res=>{
+    return new Promise((resovle,reject)=>{
+        ajax('second').success(function(res){
+            resolve(res)
+        })
+    })
+}).then(res=>{
+    return new Promise((resovle,reject)=>{
+        ajax('second').success(function(res){
+            resolve(res)
+        })
+    })
+}).then(res=>{
+
+})
+```
+
+那当要写的事件没有顺序或者关系时，还如何写呢？可以使用`all` 方法来解决。
+
+**2. catch()**
+
+Promise 对象除了有 then 方法，还有一个 catch 方法，该方法相当于`then`方法的第二个参数，指向`reject`的回调函数。不过`catch`方法还有一个作用，就是在执行`resolve`回调函数时，如果出现错误，抛出异常，不会停止运行，而是进入`catch`方法中。
+
+```
+p.then((data) => {
+     console.log('resolved',data);
+},(err) => {
+     console.log('rejected',err);
+     }
+);
+p.then((data) => {
+    console.log('resolved',data);
+}).catch((err) => {
+    console.log('rejected',err);
+});
+```
+
+**3. all()**
+
+`all`方法可以完成并行任务， 它接收一个数组，数组的每一项都是一个`promise`对象。当数组中所有的`promise`的状态都达到`resolved`的时候，`all`方法的状态就会变成`resolved`，如果有一个状态变成了`rejected`，那么`all`方法的状态就会变成`rejected`。
+
+```
+javascript
+let promise1 = new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+       resolve(1);
+    },2000)
+});
+let promise2 = new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+       resolve(2);
+    },1000)
+});
+let promise3 = new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+       resolve(3);
+    },3000)
+});
+Promise.all([promise1,promise2,promise3]).then(res=>{
+    console.log(res);
+    //结果为：[1,2,3]
+})
+```
+
+调用`all`方法时的结果成功的时候是回调函数的参数也是一个数组，这个数组按顺序保存着每一个 promise 对象`resolve`执行时的值。
+
+**（4）race()**
+
+`race`方法和`all`一样，接受的参数是一个每项都是`promise`的数组，但是与`all`不同的是，当最先执行完的事件执行完之后，就直接返回该`promise`对象的值。如果第一个`promise`对象状态变成`resolved`，那自身的状态变成了`resolved`；反之第一个`promise`变成`rejected`，那自身状态就会变成`rejected`。
+
+```
+let promise1 = new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+       reject(1);
+    },2000)
+});
+let promise2 = new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+       resolve(2);
+    },1000)
+});
+let promise3 = new Promise((resolve,reject)=>{
+    setTimeout(()=>{
+       resolve(3);
+    },3000)
+});
+Promise.race([promise1,promise2,promise3]).then(res=>{
+    console.log(res);
+    //结果：2
+},rej=>{
+    console.log(rej)};
+)
+```
+
+那么`race`方法有什么实际作用呢？当要做一件事，超过多长时间就不做了，可以用这个方法来解决：
+
+```
+Promise.race([promise1,timeOutPromise(5000)]).then(res=>{})
+```
+
+**5. finally()**
+
+`finally`方法用于指定不管 Promise 对象最后状态如何，都会执行的操作。该方法是 ES2018 引入标准的。
+
+```
+promise
+.then(result => {···})
+.catch(error => {···})
+.finally(() => {···});
+```
+
+上面代码中，不管`promise`最后的状态，在执行完`then`或`catch`指定的回调函数以后，都会执行`finally`方法指定的回调函数。
+
+下面是一个例子，服务器使用 Promise 处理请求，然后使用`finally`方法关掉服务器。
+
+```
+server.listen(port)
+  .then(function () {
+    // ...
+  })
+  .finally(server.stop);
+```
+
+`finally`方法的回调函数不接受任何参数，这意味着没有办法知道，前面的 Promise 状态到底是`fulfilled`还是`rejected`。这表明，`finally`方法里面的操作，应该是与状态无关的，不依赖于 Promise 的执行结果。`finally`本质上是`then`方法的特例：
+
+```
+promise
+.finally(() => {
+  // 语句
+});
+// 等同于
+promise
+.then(
+  result => {
+    // 语句
+    return result;
+  },
+  error => {
+    // 语句
+    throw error;
+  }
+);
+```
+
+上面代码中，如果不使用`finally`方法，同样的语句需要为成功和失败两种情况各写一次。有了`finally`方法，则只需要写一次。
+
+### 5. Promise 解决了什么问题
+
+在工作中经常会碰到这样一个需求，比如我使用 ajax 发一个 A 请求后，成功后拿到数据，需要把数据传给 B 请求；那么需要如下编写代码：
+
+```
+let fs = require('fs')
+fs.readFile('./a.txt','utf8',function(err,data){
+  fs.readFile(data,'utf8',function(err,data){
+    fs.readFile(data,'utf8',function(err,data){
+      console.log(data)
+    })
+  })
+})
+```
+
+上面的代码有如下缺点：
+
+- 后一个请求需要依赖于前一个请求成功后，将数据往下传递，会导致多个 ajax 请求嵌套的情况，代码不够直观。
+- 如果前后两个请求不需要传递参数的情况下，那么后一个请求也需要前一个请求成功后再执行下一步操作，这种情况下，那么也需要如上编写代码，导致代码不够直观。
+
+`Promise`出现之后，代码变成这样：
+
+```
+let fs = require('fs')
+function read(url){
+  return new Promise((resolve,reject)=>{
+    fs.readFile(url,'utf8',function(error,data){
+      error && reject(error)
+      resolve(data)
+    })
+  })
+}
+read('./a.txt').then(data=>{
+  return read(data)
+}).then(data=>{
+  return read(data)
+}).then(data=>{
+  console.log(data)
+})
+```
+
+这样代码看起了就简洁了很多，解决了地狱回调的问题。
+
+### 6. Promise.all 和 Promise.race 的区别的使用场景
+
+**（1）Promise.all**
+
+`Promise.all`可以将多个`Promise`实例包装成一个新的 Promise 实例。同时，成功和失败的返回值是不同的，成功的时候返回的是**一个结果数组**，而失败的时候则返回**最先被 reject 失败状态的值**。
+
+Promise.all 中传入的是数组，返回的也是是数组，并且会将进行映射，传入的 promise 对象返回的值是按照顺序在数组中排列的，但是注意的是他们执行的顺序并不是按照顺序的，除非可迭代对象为空。
+
+需要注意，Promise.all 获得的成功结果的数组里面的数据顺序和 Promise.all 接收到的数组顺序是一致的，这样当遇到发送多个请求并根据请求顺序获取和使用数据的场景，就可以使用 Promise.all 来解决。
+
+**（2）Promise.race**
+
+顾名思义，Promse.race 就是赛跑的意思，意思就是说，Promise.race([p1, p2, p3])里面哪个结果获得的快，就返回那个结果，不管结果本身是成功状态还是失败状态。当要做一件事，超过多长时间就不做了，可以用这个方法来解决：
+
+```
+Promise.race([promise1,timeOutPromise(5000)]).then(res=>{})
+```
+
+### 7. 对 async/await 的理解
+
+async/await 其实是`Generator` 的语法糖，它能实现的效果都能用 then 链来实现，它是为优化 then 链而开发出来的。从字面上来看，async 是“异步”的简写，await 则为等待，所以很好理解 async 用于申明一个 function 是异步的，而 await 用于等待一个异步方法执行完成。当然语法上强制规定 await 只能出现在 asnyc 函数中，先来看看 async 函数返回了什么：
+
+```
+async function testAsy(){
+   return 'hello world';
+}
+let result = testAsy();
+console.log(result)
+```
+
+![img](https://cdn.nlark.com/yuque/0/2020/png/1500604/1605099411873-d2eac25a-5d8c-4586-bc36-769bce79010e.png)
+
+所以，async 函数返回的是一个 Promise 对象。async 函数（包含函数语句、函数表达式、Lambda 表达式）会返回一个 Promise 对象，如果在函数中 `return` 一个直接量，async 会把这个直接量通过 `Promise.resolve()` 封装成 Promise 对象。
+
+async 函数返回的是一个 Promise 对象，所以在最外层不能用 await 获取其返回值的情况下，当然应该用原来的方式：`then()` 链来处理这个 Promise 对象，就像这样：
+
+```
+async function testAsy(){
+   return 'hello world'
+}
+let result = testAsy()
+console.log(result)
+result.then(v=>{
+    console.log(v)   // hello world
+})
+```
+
+那如果 async 函数没有返回值，又该如何？很容易想到，它会返回 `Promise.resolve(undefined)`。
+
+联想一下 Promise 的特点——无等待，所以在没有 `await` 的情况下执行 async 函数，它会立即执行，返回一个 Promise 对象，并且，绝不会阻塞后面的语句。这和普通返回 Promise 对象的函数并无二致。
+
+**注意：** `Promise.resolve(x)` 可以看作是 `new Promise(resolve => resolve(x))` 的简写，可以用于快速封装字面量对象或其他对象，将其封装成 Promise 实例。
+
+### 9. async/await 的优势
+
+单一的 Promise 链并不能发现 async/await 的优势，但是，如果需要处理由多个 Promise 组成的 then 链的时候，优势就能体现出来了（很有意思，Promise 通过 then 链来解决多层回调的问题，现在又用 async/await 来进一步优化它）。
+
+假设一个业务，分多个步骤完成，每个步骤都是异步的，而且依赖于上一个步骤的结果。仍然用 `setTimeout` 来模拟异步操作：
+
+```
+/**
+ * 传入参数 n，表示这个函数执行的时间（毫秒）
+ * 执行的结果是 n + 200，这个值将用于下一步骤
+ */
+function takeLongTime(n) {
+    return new Promise(resolve => {
+        setTimeout(() => resolve(n + 200), n);
+    });
+}
+function step1(n) {
+    console.log(`step1 with ${n}`);
+    return takeLongTime(n);
+}
+function step2(n) {
+    console.log(`step2 with ${n}`);
+    return takeLongTime(n);
+}
+function step3(n) {
+    console.log(`step3 with ${n}`);
+    return takeLongTime(n);
+}
+```
+
+现在用 Promise 方式来实现这三个步骤的处理：
+
+```
+function doIt() {
+    console.time("doIt");
+    const time1 = 300;
+    step1(time1)
+        .then(time2 => step2(time2))
+        .then(time3 => step3(time3))
+        .then(result => {
+            console.log(`result is ${result}`);
+            console.timeEnd("doIt");
+        });
+}
+doIt();
+// c:\var\test>node --harmony_async_await .
+// step1 with 300
+// step2 with 500
+// step3 with 700
+// result is 900
+// doIt: 1507.251ms
+```
+
+如果用 async/await 来实现呢，会是这样：
+
+```
+async function doIt() {
+    console.time("doIt");
+    const time1 = 300;
+    const time2 = await step1(time1);
+    const time3 = await step2(time2);
+    const result = await step3(time3);
+    console.log(`result is ${result}`);
+    console.timeEnd("doIt");
+}
+doIt();
+```
+
+结果和之前的 Promise 实现是一样的，但是这个代码看起来是不是清晰得多，几乎跟同步代码一样
