@@ -7,15 +7,11 @@
 //   pre.concat(cur)
 // } , []);
 
-
-
-const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
-
+const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, 'string', { name: '弹铁蛋同学' }]
 
 // 用reduce
 // 首先使用 reduce 展开一层
 // const arr1 = arr.reduce((pre, cur) => pre.concat(cur), []);
-
 
 // function flat(arr){
 //   return arr.reduce((pre,cur)=>{
@@ -42,8 +38,6 @@ const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "
 // flat(arr, Infinity);
 // // [1, 2, 3, 4, 1, 2, 3, 1, 2, 3, 1, 2, 3, 5, "string", { name: "弹铁蛋同学" }];
 
-
-
 // 用栈
 // function flat(arr){
 //   const stack = [].concat(arr)
@@ -63,24 +57,32 @@ const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "
 
 // console.log(flat(arr));
 
-
-
 // const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }]
 
-function flat(arr) {
-  // const newArr = [].concat(arr)
-  // console.log(newArr);
-
-  return arr.reduce((pres, cur) => {
-    return pres.concat(Array.isArray(cur) ? flat(cur) : cur)
-  }, [])
-
-}
-
 // function flat(arr) {
+//   // const newArr = [].concat(arr)
+//   // console.log(newArr);
+
 //   return arr.reduce((pres, cur) => {
 //     return pres.concat(Array.isArray(cur) ? flat(cur) : cur)
 //   }, [])
+
 // }
 
-console.log(flat(arr));
+// // function flat(arr) {
+// //   return arr.reduce((pres, cur) => {
+// //     return pres.concat(Array.isArray(cur) ? flat(cur) : cur)
+// //   }, [])
+// // }
+
+function flat(arr, num = 1) {
+  return arr.reduce((pres, cur) => {
+    if (num > 0) {
+      return pres.concat(Array.isArray(cur) ? flat(cur, num - 1) : cur)
+    } else {
+      return arr.slice()
+    }
+  })
+}
+
+console.log(flat(arr))

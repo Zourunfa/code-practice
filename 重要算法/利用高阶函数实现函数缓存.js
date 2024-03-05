@@ -14,7 +14,6 @@
 // console.log(add()(1));   // 1
 // console.log(add()(2));     // 2
 
-
 // var add = function () {
 //   var num = 0;
 //   return function (a) {
@@ -25,11 +24,6 @@
 // var adder = add();
 // console.log(adder(1)); // 1
 // adder(2); // 3
-
-
-
-
-
 
 // debugger
 // const memo = function (fn) {
@@ -42,13 +36,6 @@
 //   }
 // }
 
-
-
-
-
-
-
-
 // function memo(fn) {
 //   const cache = {}
 
@@ -57,7 +44,6 @@
 //     return cache[_args] || (cache[_args] = fn.apply(fn, args))
 //   }
 // }
-
 
 // function memo(fn) {
 //   const cache = {}
@@ -71,7 +57,6 @@ var add = function (a) {
   return a + 1
 }
 
-
 function memo(fn) {
   const cache = {}
   return function (...ret) {
@@ -81,8 +66,8 @@ function memo(fn) {
 }
 
 const adder = memo(add)
-console.log(adder);
-console.log(adder(1));
-console.log(adder(1));
-console.log(adder(3));
-console.log(adder(3));
+console.log(adder)
+console.log(adder(1))
+console.log(adder(1))
+console.log(adder(3))
+console.log(adder(3))
