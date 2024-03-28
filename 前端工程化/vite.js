@@ -19,3 +19,15 @@
 // transformIndexHtml：注入变量，用来转换 HTML 的内容。vite-plugin-html 插件可以帮助我们在html里注入变量，就是利用这个钩子
 
 // handleHotUpdate：执行自定义 HMR 更新处理
+
+/**
+ ESM与CJS之间的差异
+除了ESM是语言标准规范和导入导出的关键字不同以外，esm与cjs有以下的差异点：
+
+CJS   ESM
+加载时机运行时（动态）编译时（静态）
+导出值方式值的拷贝值的引用
+tree Shaking false   true
+
+
+ */
