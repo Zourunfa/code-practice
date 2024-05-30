@@ -1,21 +1,21 @@
 /**
  * 步骤
- * 
+ *
  * 1,创建一个新的对象
  * 2，将构造函数的作用域指向这个对象，改变this的指向
  * 3，执行构造函数中的代码
  * 4，返回这个新的对象
- * 
+ *
  */
 
 //  function New() {
 //   // 创建一个新的对象
-//   const obj = {}    
+//   const obj = {}
 //   // 获取第一个参数，arguments是类数组，不可直接调用shift方法
 //   //此外因为 shift 会修改原数组，所以 arguments 会被去除第一个参数
-//   const Constructor = [].shift.call(arguments)  
+//   const Constructor = [].shift.call(arguments)
 //   // 将obj的原型指向构造函数的原型对象，这样obj就可以访问构造函数原型上的属性
-//   obj.__proto__ = Constructor.prototype   
+//   obj.__proto__ = Constructor.prototype
 //   // 将构造函数的this指向obj，这样obj就可以访问到构造函数中的属性
 //   Constructor.apply(obj, arguments);
 //   // 返回 obj
@@ -27,8 +27,8 @@ function New() {
   const obj = {}
   // 获取第一个参数即为构造函数
   const constr = [...arguments].shift()
-  console.log(constr);
-  console.log(arguments);
+  console.log(constr)
+  console.log(arguments)
   // 将obj的原型指向构造函数的原型对象，这样obj就可以访问构造函数原型上的属性
   obj.__proto__ = constr.prototype
   // 执行构造函数
@@ -41,7 +41,6 @@ function New() {
 //   var Fn = [].shift.call(arguments)
 //   Fn.prototype = obj.__proto__
 //   obj.__proto__.Constructor = Fn
-
 
 //   Fn.apply(obj,arguments)
 //   return obj;
@@ -62,9 +61,8 @@ Parent.prototype.sayName = function () {
 let son = new Parent(18, 'lining')
 let newSon = New(Parent, 18, 'lining')
 
-console.log('son :', son)       // son : Parent { age: 18, name: 'lining', sayAge: [Function] }
+console.log('son :', son) // son : Parent { age: 18, name: 'lining', sayAge: [Function] }
 console.log('newSon :', newSon)
-
 
 // function New() {
 //   const obj = {}
@@ -79,3 +77,18 @@ console.log('newSon :', newSon)
 
 //   return obj
 // }
+
+// new 最新完善
+function myNew(constructor, ...args) {
+  // 创建一个新对象
+  const obj = {}
+  // 将obj的原型指向构造函数的原型对象，这样obj就可以访问构造函数原型上的属性
+  obj.__proto__ = constructor.prototype
+  // 使用call方法调用构造函数，并将创建的空对想作为上下文，实际上执行了构造函数
+  let result = constructor.call(obj, ...args)
+  // 如果构造函数没有显式返回一个对象，则返回这个新创建的对象实例
+  if (result && (typeof result === 'object' || typeof result === 'function')) {
+    return result
+  }
+  return obj
+}
