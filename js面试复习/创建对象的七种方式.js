@@ -3,9 +3,8 @@ let obj1 = new Object()
 
 obj.name = 'sattre'
 obj.fn = function () {
-  console.log('nihao');
+  console.log('nihao')
 }
-
 
 // 对象字面量创建
 
@@ -13,8 +12,8 @@ let obj2 = {
   a: 4,
   b: 3,
   fn: function () {
-    console.log('zaijian');
-  }
+    console.log('zaijian')
+  },
 }
 
 /**
@@ -22,7 +21,7 @@ let obj2 = {
  * 也就是第一种，第二种方法的缺点所在：它们都是用了同一个接口创建很多对象，会产生大量的重复代码，
  * 就是如果你有100个对象，那你要输入100次很多相同的代码。那我们有什么方法来避免过多的重复代码呢，
  * 就是把创建对象的过程封装在函数体内，通过函数的调用直接生成对象。
- * 
+ *
  */
 
 //工厂模式
@@ -38,13 +37,12 @@ function Person(name, age) {
 var person1 = new Person('a', 123)
 var person2 = new Person('b', 13)
 
-
 /**
  * 在使用工厂模式创建对象的时候，我们都可以注意到，
  * 在createPerson函数中，返回的是一个对象。
  * 那么我们就无法判断返回的对象究竟是一个什么样的类型。
  * 于是就出现了第四种创建对象的模式。
- * 
+ *
  */
 
 function People(name, age) {
@@ -78,7 +76,6 @@ var p2 = new People('bob', 55)
 就意味着每次创建对象(实例)的时候就会重新创建方法, 重复的创建方法开辟了新的内存来储存
 */
 
-
 // 原型模式
 
 function person2(name, age) {
@@ -105,7 +102,6 @@ console.log(p4.likes) // -> ['apple', 'banana']
 
  */
 
-
 // 组合模式(构造函数模式+原型模式)
 // 每个实例拥有自己的属性和方法, 以及共享相同的方法, 用的较多一种模式
 
@@ -120,9 +116,7 @@ Person.protoytype.sayname = () => {
 
 const p1 = new Person('dz', 23)
 const p2 = new Person('dz1', 24)
-console.log(p1.name, p2.name)// dz dz1
-
-
+console.log(p1.name, p2.name) // dz dz1
 
 // 动态原型模式
 
@@ -149,14 +143,15 @@ console.log(p1.sayname) // -> dz
 
 // ES6 创建对象
 
-
 class Person {
-  constructor(name, age) { // constructor构造函数
+  constructor(name, age) {
+    // constructor构造函数
     this.name = name
     this.age = age
   }
 
-  sayname() { //原型上的
+  sayname() {
+    //原型上的
     console.log(this.name)
   }
   static sayAge() {

@@ -9,7 +9,6 @@
 // }
 // 柯里化是一种将使用多个参数的一个函数转化为一系列使用一个参数的函数的技术
 
-
 // debugger
 
 // function sub_curry(fn){
@@ -28,11 +27,9 @@
 //   return a + b;
 // }
 
-
 // 或者
 // var addCurry = curry(add, 1);
 // console.log(addCurry(2)); // 3
-
 
 // function curry(fn,length){
 //   length = length || fn.length
@@ -85,7 +82,6 @@
 //   }
 // }
 
-
 // var fn = curry(function(a, b, c) {
 //   console.log([a, b, c]);
 // });
@@ -93,11 +89,6 @@
 // // fn("a", "b", "c") // ["a", "b", "c"]
 // // fn("a", "b")("c") // ["a", "b", "c"]
 // fn("a")("b")("c") // ["a", "b", "c"]
-
-
-
-
-
 
 // debugger
 // 支持多参数传递
@@ -124,7 +115,6 @@
 //   }
 // }
 
-
 // var fn = progressCurrying(function(a, b, c) {
 //   console.log([a, b, c]);
 // });
@@ -136,8 +126,6 @@
 // })
 
 // console.log(fn2(2)(3)(4));
-
-
 
 // function currying(fn, args) {
 //   var _this = this
@@ -160,14 +148,11 @@
 
 // }
 
-
-
-
 var fn = currying(function (a, b, c) {
-  console.log([a, b, c]);
-});
+  console.log([a, b, c])
+})
 
-fn("a")("b")("c") // ["a", "b", "c"]
+fn('a')('b')('c') // ["a", "b", "c"]
 // function currying(fn, args) {
 //   var _this = this
 //   var len = fn.length
@@ -185,12 +170,8 @@ fn("a")("b")("c") // ["a", "b", "c"]
 //       return currying.call(_this, fn, _args)
 //     }
 //     return fn.apply(fn, _args)
-
 //   }
 // }
-
-
-
 
 function currying(fn, arg) {
   let _this = this
@@ -206,7 +187,6 @@ function currying(fn, arg) {
       return currying.call(_this, fn, _args)
     }
 
-    return fn.apply(this, _args);
-
+    return fn.apply(this, _args)
   }
 }

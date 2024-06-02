@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      // Function.prototype.myCall = function (context) {
+      //   var context = context || window
+      //   let args = [...arguments].slice(1)
+      //   context.fn = this
+      //   let res = context.fn(...args)
+      //   delete context.fn
+      //   return res
+      // }
+
+      // let a = {
+      //   value: 1,
+      // }
+      // function getValue(name, age) {
+      //   console.log(name)
+      //   console.log(age)
+      //   console.log(this.value)
+      // }
+      // getValue.myCall(a, 'zhangshan', '12')
+
+      // Function.prototype.myBind = function (obj) {
+      //   // 检查'this'是否是一个函数，如果不是则抛出一个类型错误
+      //   if (typeof this !== 'function') {
+      //     throw new TypeError('Error')
+      //   }
+      //   // 保存函数的引用
+      //   var _this = this
+      //   console.log(_this)
+      //   // 获取除第一个参数外的其他参数,这些参数将在返回的函数调用时传递给原始函数
+      //   var args = [...arguments].slice(1)
+      //   // 返回一个函数，该函数包裹了原始函数并将其应用于指定对象
+      //   return function fn() {
+      //     // 如果通过'new'关键字调用返回的函数，则创建一个新的实例，并将参数传递给原始函数
+      //     if (this instanceof fn) {
+      //       return new _this(...args, ...arguments)
+      //     }
+      //     // 否则，在指定的上下文对象上调用原始函数，并传递参数
+      //     return _this.apply(obj, args.concat(...arguments))
+      //   }
+      // }
+
+      // 构造方法继承
+      // 优点：1，可以传参给父类利用call的参数列表传递 2，避免了所有属性被实例共享
+      // 缺点：1,每创建一个实例  就要创造一个方法 2,只能继承父类的实例属性和方法，不能继承原型的属性和方法
+
+      // function Parent(name) {
+      //   this.name = name || 'default_name'
+
+      //   this.getInfo = function () {
+      //     return this.name
+      //   }
+      // }
+
+      // Parent.prototype.say = function () {
+      //   console.log('hello')
+      // }
+
+      // function Child(name) {
+      //   Parent.call(this, name)
+      // }
+
+      // var child1 = new Child(['a'])
+      // console.log(child1.name) // ["a"]
+      // // console.log(child1);
+      // // child1.say() //报错 只能继承父类的实例属性和方法，不能继承原型的属性和方法
+      // // child1.name.push('Bob')
+      // console.log(child1.getInfo()) // ["a"]
+
+      // var child2 = new Child()
+      // console.log(child2.getInfo()) //["default_name"]
+
+      // // 原型链继承
+      // // 特点：所有实例共享属性和方法
+
+      // function Parent() {
+      //   this.name = ['sartre']
+      // }
+
+      // Parent.prototype.getName = function () {
+      //   return this.name
+      // }
+
+      // function Child() {}
+
+      // Child.prototype = new Parent()
+
+      // var child1 = new Child()
+      // console.log(child1.name) //["sartre"]
+
+      // child1.name.push('mark')
+      // console.log(child1.name) // ["sartre", "mark"]
+
+      // var child2 = new Child()
+      // console.log(child2.name) // ["sartre", "mark"]
+
+      // 组合继承:融合前两者的优点，既可以共享原型方法而且不存在应用属性共享的问题
+      // 生成的实例既是子类的实例，又是弗雷的实例
+
+      // function Parent(age, name) {
+      //   this.age = age || 20
+      //   this.name = name
+      // }
+
+      // Parent.prototype.say = function () {
+      //   console.log(this.name, this.age)
+      // }
+
+      // function Child(age, name) {
+      //   Parent.call(this, name)
+      // }
+
+      // Child.prototype = new Parent()
+      // Child.prototype.constructor = Child
+
+      // 4.原型式继承
+
+      // function createObj(o) {
+      //   function F() {}
+
+      //   F.prototype = o
+
+      //   return new F()
+      // }
+      // 就是es5 的Object.create的模拟实现，将传入的对象作为创建的对象的原型
+      // 缺点:
+      // 包含引用类型的属性值始终
+
+      // 寄生式继承
+      // 这种方式的继承和钩爪函数的继承方式一样
+
+      // function createObj(o) {
+      //   var clone = Object.create(o)
+      //   clone.say = function () {
+      //     console.log('hello')
+      //   }
+
+      //   return clone
+      // }
+
+      // // 寄生组合式继承
+      // function inherit(Parent, Child) {
+      //   // 创建对象，创建父类原型的一个副本
+      //   const prototype = Object.create(Parent.prototype)
+
+      //   prototype.constructor = child
+      //   child.prototype = prototype
+      // }
+
+      // function Parent(name) {
+      //   this.name = name
+      // }
+
+      // function Child(age) {
+      //   Parent.call(this, age)
+      //   this.age = age
+      // }
+
+      // inherit(Parent, Child)
+
+      // class Parent {
+      //   constructor(name, age) {
+      //     this.name = name
+      //   }
+      //   say() {
+      //     console.log(this.name)
+      //   }
+      // }
+
+      // class Child {
+      //   constructor(name, age) {
+      //     super(name)
+      //     this.age = age
+      //   }
+      // }
+
+      function curry(fn) {
+        return function curried(...args) {
+          if (args.length > fn.length) {
+            // 如果参数个数达到length，执行原函数
+            return fn.apply(this, args)
+          } else {
+            // 如果参数个数未达到length，返回一个函数，继续接收参数
+            // 递归接受参数
+            return function (...moreArgs) {
+              return curried.apply(this, args.concat(moreArgs))
+            }
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
