@@ -1,54 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-        input{
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%,-50%);
+      input {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
 
-            border: solid 2px ;
-            /* border-radius: 50%; */
-            height: 50px;
-            width: 500px;
-        }
+        border: solid 2px;
+        /* border-radius: 50%; */
+        height: 50px;
+        width: 500px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <input type="text" />
-</body>
-<script>
+  </body>
+  <script>
     const inp = document.querySelector('input')
     // inp.onkeyup = function () {
     //     console.log(inp.value);
     // }
 
-    function debounced(fn, delay=500) {
+    function debounced(fn, delay = 500) {
+      let timer = null
 
-        let timer = null
-
-        return function () {
-            console.log(timer);
-            if (timer) {
-                clearInterval(timer)
-            }
-            timer = setTimeout(() => {
-                fn.apply(this, arguments)
-                timer = null
-            }, delay)
-            console.log(timer);
+      return function () {
+        console.log(timer)
+        if (timer) {
+          clearInterval(timer)
         }
+        timer = setTimeout(() => {
+          fn.apply(this, arguments)
+          timer = null
+        }, delay)
+        console.log(timer)
+      }
     }
 
-    inp.addEventListener('keyup',debounced(()=>{
-        console.log(inp.value);
-    },1000))
-</script>
+    function debounced(fn, delay = 500) {
+      let timer = null
+      return function () {
+        console.log(timer)
+        if (timer) {
+          clearInterval(timer)
+        }
+        timer = setTimeout(() => {
+          fn.apply(this, arguments)
+          timer = null
+        }, delay)
+        console.log(timer)
+      }
+    }
 
+    inp.addEventListener(
+      'keyup',
+      debounced(() => {
+        console.log(inp.value)
+      }, 1000)
+    )
+
+    function debounced(fn, delay) {
+      let timer = null
+      return function () {
+        if (timer) {
+          clearInterval(timer)
+        }
+        timer = setTimeout(() => {
+          fn.apply(this, arguments)
+          timer = null
+        }, delay)
+      }
+    }
+  </script>
 </html>

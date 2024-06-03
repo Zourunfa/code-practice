@@ -6,9 +6,6 @@
 // var arr = [1,1,'true','true',true,true,15,15, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
 // console.log(unique(arr))
 
-
-
-
 // 双重循环+splice
 // function unique(arr){
 //   for(var i=0;i<arr.length;i++){
@@ -24,7 +21,6 @@
 
 // var arr = [1,1,'true','true',true,true,15,15, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
 // console.log(unique(arr))
-
 
 // 利用indexOf
 // function unique(arr){
@@ -80,10 +76,7 @@
 // }
 // var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
 //   console.log(unique(arr))
-  //[1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {…}, {…}]     //{}没有去重
-
-
-
+//[1, "true", true, 15, false, undefined, null, NaN, "NaN", 0, "a", {…}, {…}]     //{}没有去重
 
 // filter
 // function unique(arr) {
@@ -93,15 +86,6 @@
 //   });
 // }
 
-function testOrder(arg) {
-  console.log(arg);
-  console.log(a);
-  var arg = 'hello';
-  var a = 10; 
-  function a() {
-     console.log('fun');
-  } 
-  console.log(a); 
-  console.log(arg); 
-}; 
-testOrder('hi');
+function uniqueArray(arr) {
+  return Array.from(new Set(arr.map(item => JSON.stringify(item)))).map(item => JSON.parse(item))
+}

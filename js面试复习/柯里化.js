@@ -190,3 +190,15 @@ function currying(fn, arg) {
     return fn.apply(this, _args)
   }
 }
+
+function currying(fn) {
+  return function curry(arg) {
+    if (fn.length < arg.length) {
+      return fn.apply(this, arg)
+    } else {
+      return function (...moreArgs) {
+        return curry.apply(this, moreArgs)
+      }
+    }
+  }
+}
