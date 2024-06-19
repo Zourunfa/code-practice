@@ -1,6 +1,6 @@
-const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }];
+const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, 'string', { name: '弹铁蛋同学' }]
 
-console.log(flat(arr, 2));
+console.log(flat(arr, 2))
 
 function flat(arr) {
   let stack = [].concat(arr)

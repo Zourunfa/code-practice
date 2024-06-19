@@ -65,6 +65,14 @@ function memo(fn) {
   }
 }
 
+function memo(fn) {
+  const cache = {}
+  return function (...ret) {
+    let key = JSON.stringify(ret)
+    return cache[key] || (cache[key] = fn.apply(fn, [...ret]))
+  }
+}
+
 const adder = memo(add)
 console.log(adder)
 console.log(adder(1))

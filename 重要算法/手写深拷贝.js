@@ -53,25 +53,25 @@ oldObj.oldObj = oldObj
 这个存储空间，需要可以存储key-value形式的数据，且key可以是一个引用类型，我们可以选择Map这种数据结构：
 
 */
-function deepClone(obj, map = new Map()) {
-  if (typeof obj === 'object' || obj == null) {
-    return obj
-  }
-  let res
+// function deepClone(obj, map = new Map()) {
+//   if (typeof obj === 'object' || obj == null) {
+//     return obj
+//   }
+//   let res
 
-  if (typeof obj === 'object') {
-    if (map.get(target)) {
-      return map.get(target)
-    }
-    map.set(target, cloneTarget)
-    res = Array.isArray(obj) ? [] : {}
-    for (const key in obj) {
-      res[key] = deepClone(obj[key])
-    }
-  }
+//   if (typeof obj === 'object') {
+//     if (map.get(target)) {
+//       return map.get(target)
+//     }
+//     map.set(target, cloneTarget)
+//     res = Array.isArray(obj) ? [] : {}
+//     for (const key in obj) {
+//       res[key] = deepClone(obj[key])
+//     }
+//   }
 
-  return res
-}
+//   return res
+// }
 
 // 为什么要这样做呢？，先来看看WeakMap的作用：
 
@@ -80,3 +80,44 @@ function deepClone(obj, map = new Map()) {
 // 什么是弱引用呢？
 
 // 在计算机程序设计中，弱引用与强引用相对，是指不能确保其引用的对象不会被垃圾回收器回收的引用。 一个对象若只被弱引用所引用，则被认为是不可访问（或弱可访问）的，并因此可能在任何时刻被回收。
+
+function deepClone(obj) {
+  if (typeof obj !== 'object' && Array.isArray(obj)) {
+    return obj
+  }
+
+  if (!deepClone.cached) {
+    // 初始化
+    deepClone.cached = new WeakMap()
+  }
+  // 是否处理过
+  if (deepClone.cached.has(obj)) {
+    return deepClone.cached.get(obj)
+  }
+  let tmp
+  if (obj instanceof Map) {
+    let tmp = new Map()
+    deepClone.cached.set(obj, tmp)
+    for (let [key, val] of obj) {
+      tmp.set(deepClone(key), deepClone(val))
+    }
+  } else if (obj instanceof Set) {
+    deepClone.cached.set(obj, tmp)
+    for (let val of obj) {
+      tmp.add(deepClone(val))
+    }
+  } else if (obj instanceof RegExp) {
+    deepClone.cached.set(obj, tmp)
+    tmp = new RegExp(obj)
+  } else {
+    // 数组和对象
+    tmp = new obj.constructor()
+    deepClone.cached.set(obj, tmp)
+    for (let key in obj) {
+      tmp[key] = deepClone(obj[key])
+    }
+  }
+  // 下面代码不能写的原因是先存引用，在改变会报错
+  //   deepClone.cached.set(obj, tmp)
+  return tmp
+}

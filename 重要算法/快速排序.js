@@ -1,4 +1,4 @@
-const arr = [5, 4, 3, 6, 7, 1, 2];
+const arr = [5, 4, 3, 6, 7, 1, 2]
 
 // var quickSort = function (arr) {
 //   if (arr.length <= 1) {
@@ -25,24 +25,45 @@ const arr = [5, 4, 3, 6, 7, 1, 2];
 // };
 function quickSort(arr) {
   if (arr.length <= 1) {
-    return arr;
+    return arr
   }
 
-  let povit = arr.splice(Math.floor(arr.length / 2), 1)[0];
+  let povit = arr.splice(Math.floor(arr.length / 2), 1)[0]
   // console.log(povit);
   let left = [],
-    right = [];
+    right = []
 
   for (let i = 0; i < arr.length; i++) {
     if (arr[i] < povit) {
-      left.push(arr[i]);
+      left.push(arr[i])
     }
     if (arr[i] > povit) {
-      right.push(arr[i]);
+      right.push(arr[i])
     }
   }
 
-  return quickSort(left).concat([povit], quickSort(right));
+  return quickSort(left).concat([povit], quickSort(right))
 }
 
-console.log(quickSort(arr));
+console.log(quickSort(arr))
+
+function quickSort(arr) {
+  if (arr.length <= 1) {
+    return arr
+  }
+
+  let povit = arr.splice(Math.floor(arr.length / 2), 1)[0]
+  let left = [],
+    right = []
+
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] > povit) {
+      right.push(arr[i])
+    }
+
+    if (arr[i] < povit) {
+      left.push(arr[i])
+    }
+  }
+  return quickSort(left).concat([povit, quickSort(right)])
+}

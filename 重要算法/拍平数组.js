@@ -13,11 +13,9 @@
 //   return res
 // }
 
+const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, 'string', { name: '弹铁蛋同学' }]
 
-
-const arr = [1, 2, 3, 4, [1, 2, 3, [1, 2, 3, [1, 2, 3]]], 5, "string", { name: "弹铁蛋同学" }];
-
-console.log(flat(arr, 2));
+console.log(flat(arr, 2))
 
 // function flat(arr) {
 //   let stack = [].concat(arr)
@@ -35,14 +33,11 @@ console.log(flat(arr, 2));
 //   return res
 // }
 
-
-
-// function flat(arr) {
-//   return arr.reduce((pre, cur) => {
-//     return pre.concat(Array.isArray(cur) ? flat(cur) : cur)
-//   }, [])
-// }
-
+function flat(arr) {
+  return arr.reduce((pre, cur) => {
+    return pre.concat(Array.isArray(cur) ? flat(cur) : cur)
+  }, [])
+}
 
 // 通过传入整数参数控制“拉平”层数
 

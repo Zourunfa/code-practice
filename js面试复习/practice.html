@@ -6,6 +6,9 @@
     <title>Document</title>
   </head>
   <body>
+    <div>
+      <button class="btn">Click me</button>
+    </div>
     <script>
       // Function.prototype.myCall = function (context) {
       //   var context = context || window
@@ -245,35 +248,356 @@
       // }
       // test1()
 
-      Promise.myAll = function (arr) {
-        return new Promise((resolve, reject) => {
-          let length = arr.length
-          let count = 0
-          let res = []
+      // Promise.myAll = function (arr) {
+      //   return new Promise((resolve, reject) => {
+      //     let length = arr.length
+      //     let count = 0
+      //     let res = []
 
-          for (let i = 0; i < len; i++) {
-            Promise.resolve(arr[i])
-              .then(data => {
-                res[i] = data
-                count++
-                if (count == length) {
-                  resolve(res)
-                }
-              })
-              .catch(err => reject(err))
-          }
-        })
-      }
+      //     for (let i = 0; i < len; i++) {
+      //       Promise.resolve(arr[i])
+      //         .then(data => {
+      //           res[i] = data
+      //           count++
+      //           if (count == length) {
+      //             resolve(res)
+      //           }
+      //         })
+      //         .catch(err => reject(err))
+      //     }
+      //   })
+      // }
 
-      Promise.race = function (arr) {
-        return new Promise((resolve, reject) => {
-          for (let i = 0; i < arr.length; i++) {
-            Promise.resolve(arr[i])
-              .then(data => resolve(data))
-              .catch(err => reject(err))
-          }
-        })
+      // Promise.race = function (arr) {
+      //   return new Promise((resolve, reject) => {
+      //     for (let i = 0; i < arr.length; i++) {
+      //       Promise.resolve(arr[i])
+      //         .then(data => resolve(data))
+      //         .catch(err => reject(err))
+      //     }
+      //   })
+      // }
+
+      // function deepClone(obj) {
+      //   if (typeof obj !== 'object' || obj !== null) {
+      //     return obj
+      //   }
+
+      //   deepClone.cached = new WeakMap()
+
+      //   if (deepClone.cached.has(obj)) {
+      //     return deepClone.cached.get(obj)
+      //   }
+
+      //   let tmp
+      //   if (obj instanceof Map) {
+      //     tmp = new Map()
+      //     deepClone.cached.set(obj, tmp)
+      //     for (let [key, value] of obj) {
+      //       tmp.set(deepClone(key), deepClone(value))
+      //     }
+      //   } else if (obj instanceof Set) {
+      //     tmp = new Set()
+      //     deepClone.cached.set(obj, tmp)
+      //     for (let key of obj) {
+      //       tmp.add(deepClone(key))
+      //     }
+      //   } else if (obj instanceof Set) {
+      //     tmp = new RegExp()
+      //     deepClone.cached.set(obj, tmp)
+      //     tmp = new RegExp(obj)
+      //   } else {
+      //     tmp = new Object.constructor()
+      //     deepClone.cached.set(obj, tmp)
+      //     for (let key in obj) {
+      //       if (obj.hasOwnProperty(key)) {
+      //         obj[key] = deepClone(obj[key])
+      //       }
+      //     }
+      //   }
+
+      //   return tmp
+      // }
+      // function deepCopy(data, hash = new WeakMap()) {
+      //   if (typeof data !== 'object' || data === null) {
+      //     throw new TypeError('传入参数不是对象')
+      //   }
+      //   // 判断传入的待拷贝对象的引用是否存在于hash中
+      //   if (hash.has(data)) {
+      //     return hash.get(data)
+      //   }
+      //   let newData = {}
+      //   const dataKeys = Object.keys(data)
+      //   dataKeys.forEach(value => {
+      //     const currentDataValue = data[value]
+      //     // 基本数据类型的值和函数直接赋值拷贝
+      //     if (typeof currentDataValue !== 'object' || currentDataValue === null) {
+      //       newData[value] = currentDataValue
+      //     } else if (Array.isArray(currentDataValue)) {
+      //       // 实现数组的深拷贝
+      //       newData[value] = [...currentDataValue]
+      //     } else if (currentDataValue instanceof Set) {
+      //       // 实现set数据的深拷贝
+      //       newData[value] = new Set([...currentDataValue])
+      //     } else if (currentDataValue instanceof Map) {
+      //       // 实现map数据的深拷贝
+      //       newData[value] = new Map([...currentDataValue])
+      //     } else {
+      //       // 将这个待拷贝对象的引用存于hash中
+      //       hash.set(data, data)
+      //       // 普通对象则递归赋值
+      //       newData[value] = deepCopy(currentDataValue, hash)
+      //     }
+      //   })
+      //   return newData
+      // }
+      // let originalObj = {
+      //   name: 'John1',
+      //   age: 30,
+      //   regExp: /test/g,
+      //   date: new Date(),
+      //   set: new Set([1, 2, 3]),
+      //   map: new Map([
+      //     ['key1', 'value1'],
+      //     ['key2', 'value2'],
+      //   ]),
+      //   circularRef: null,
+      // }
+      // originalObj.bar = originalObj
+
+      // let newObj = deepClone(originalObj)
+      // console.log(newObj, '---newObj')
+      // let newObj2 = deepCopy(originalObj)
+      // console.log(newObj2, '---newObj')
+
+      // Promise.myAll = function (reqArr) {
+      //   return new Promise((resolve, reject) => {
+      //     let count = 0
+      //     let resultArr = []
+      //     for (let i = 0; i < reqArr.length; i++) {
+      //       Promise.resolve(reqArr[i])
+      //         .then(() => {
+      //           if (count < reqArr.length) {
+      //             count++
+      //             resultArr.push(reqArr[i])
+      //           } else {
+      //             resolve(resultArr)
+      //           }
+      //         })
+      //         .catch(err => reject(err))
+      //     }
+      //   })
+      // }
+
+      // Promise.race = function (arr) {
+      //   return new Promise((resolve, reject) => {
+      //     for (let i = 0; i < arr.length; i++) {
+      //       Promise.resolve(arr[i])
+      //         .then(() => {
+      //           resolve(arr[i])
+      //         })
+      //         .catch(err => reject(err))
+      //     }
+      //   })
+      // }
+
+      //
+
+      // function getFormatString(num) {
+      //   return num.toString().replace(/\d+/, p => {
+      //     console.log(p, '-----p')
+
+      //     return p.replace(/\d(?=(\d{3})+$)+/g, (p1, p2) => {
+      //       console.log(p1, '-----p1')
+      //       console.log(p2, '-----p2')
+      //       return p1 + ','
+      //     })
+      //   })
+      // }
+
+      // let a = 1234567894532
+
+      // console.log(getFormatString(a), '----a')
+
+      // function mysetTimeInterval(fn, time) {
+      //   function interval() {
+      //     fn()
+      //     setTimeout(interval, time)
+      //   }
+      //   setTimeout(interval, time)
+      // }
+
+      // let a = mysetTimeInterval(() => {
+      //   console.log(111)
+      // }, 1000)
+      // let b = mysetTimeInterval(() => {
+      //   console.log(222)
+      // }, 1000)
+
+      // function myNew(Func, ...args) {
+      //   let obj = {}
+      //   obj.__proto__ = Func.prototype
+      //   let result = Func.apply(obj, args)
+      //   // 如果构造函数返回的一个是对象，则返回该对象，否则返回新创建的对象
+      //   return result instanceof Object ? result : obj
+      // }
+
+      // let btn = document.querySelector('.btn')
+      // btn.addEventListener('click', function () {
+      //   queueMicrotask(() => {
+      //     console.log('微任务1')
+      //   })
+      //   console.log(1)
+      // })
+      // btn.addEventListener('click', function () {
+      //   queueMicrotask(() => {
+      //     console.log('微任务2')
+      //   })
+      //   console.log(2)
+      // })
+
+      // // 会把所有的回调打包成一个宏任务队列然后执行
+      // btn.click()
+
+      async function async1() {
+        console.log('async1 start')
+        await async2()
+        console.log('async1 end')
       }
+      async function async2() {
+        console.log('async2')
+      }
+      console.log('script start')
+      setTimeout(function () {
+        console.log('settimeout')
+      })
+      async1()
+      new Promise(function (resolve) {
+        console.log('promise1')
+        resolve()
+      }).then(function () {
+        console.log('promise2')
+      })
+      console.log('script end')
+
+      /*
+  script start
+async1 start
+async2
+promise1
+script end
+async1 end
+promise2
+settimeout
+  */
+
+      console.log('1')
+
+      // 定义注解 setTimeout_1 用于下文使用方便
+      setTimeout(function () {
+        console.log('2')
+        process.nextTick(function () {
+          console.log('3')
+        })
+        new Promise(function (resolve) {
+          console.log('4')
+          resolve()
+        }).then(function () {
+          console.log('5')
+        })
+      })
+      process.nextTick(function () {
+        console.log('6')
+      })
+      new Promise(function (resolve) {
+        console.log('7')
+        resolve()
+      }).then(function () {
+        console.log('8')
+      })
+
+      // setTimeout_2
+      setTimeout(function () {
+        console.log('9')
+        process.nextTick(function () {
+          console.log('10')
+        })
+        new Promise(function (resolve) {
+          console.log('11')
+          resolve()
+        }).then(function () {
+          console.log('12')
+        })
+      })
+
+      // 1  7 6 8 2 4 3 5  9  11 10 12
+      //
+
+      const promise = new Promise((resolve, reject) => {
+        resolve('10')
+      })
+        .then(res => {
+          console.log('res1:', res) //res1: hahaha
+          return 9
+        })
+        .then(res => {
+          console.log('res2:', res) //res2: 9
+          return 8
+        })
+        .then(res => {
+          console.log('res3:', res) //res3: 8
+          let promise2 = new Promise((resolve, reject) => {
+            resolve('p2')
+          }).then(res => {
+            console.log(res)
+            setTimeout(function () {
+              console.log(' ')
+            }, 0)
+          })
+        })
+      console.log('aaa')
+      setTimeout(function () {
+        console.log('setTimeout1')
+      }, 0)
+
+      const promise1 = new Promise((resolve, reject) => {
+        console.log('p1')
+        resolve(989)
+      })
+        .then(res => {
+          console.log(res)
+          return 990
+        })
+        .then(res => {
+          console.log(res)
+          return 991
+        })
+        .then(res => {
+          console.log(res)
+          return 0
+        })
+
+      /*
+    
+    考察点 resolved后的promise对象会在这该级别事件队列结束之后才开始执行，及执行与该轮微任务队列中，始于下一级别宏任务之前
+
+执行过程：同步代码aaa-》p1-》宏任务之前把两个微任务处理掉-》res1 10-》989-》处理过程中继续产生微任务，
+继续处理-》res2 9-》990-》res 8-》991-》处理宏任务之前的微任务p2-》产生了一个宏任务setTimeout放到任务队列里-》执行宏任务，
+第一个setTimeout-》setTimeout1-》第二个setTimeout-》setTimeout2
+    */
+      /*输出结果：
+aaa
+p1
+res1: 10
+989
+res2: 9
+990
+res3: 8
+991
+p2
+setTimeout1
+setTimeout2
+*/
     </script>
   </body>
 </html>

@@ -86,6 +86,19 @@
 //   });
 // }
 
-function uniqueArray(arr) {
-  return Array.from(new Set(arr.map(item => JSON.stringify(item)))).map(item => JSON.parse(item))
+// function uniqueArray(arr) {
+//   return Array.from(
+//     new Set(
+//       arr
+//         .filter(item => item !== undefined) // 过滤掉undefined元素
+//         .map(item => JSON.stringify(item))
+//     )
+//   ).map(item => JSON.parse(item))
+// }
+
+function unique(arr) {
+  let set = new Set()
+  return arr.filter(item => {
+    return set.has(typeof item + item) ? false : set.add(typeof item + item)
+  })
 }

@@ -1,5 +1,3 @@
-
-
 // var reserver = function (s) {
 //   var i = -1, j = s.length
 //   while (++i < --j) {
@@ -18,7 +16,6 @@
 // [a, b] = [b, a]
 
 // console.log(a, b);
-
 
 // console.log(reserve(str));
 
@@ -40,7 +37,6 @@
 
 // console.log(reserve(str));
 
-
 // let str = "hello world"
 
 // function reverse(str) {
@@ -52,3 +48,7 @@
 //   return newStr.join('')
 // }
 // console.log(reverse(str));
+
+function reserve(str) {
+  return str.split('').reserve().join()
+}
