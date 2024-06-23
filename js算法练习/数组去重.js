@@ -12,7 +12,7 @@
 //   return res
 // }
 
-var arr = [1, 1, 'true', 'true', true, true, 15, 15, false, false, undefined, undefined, null, null, NaN, NaN, 'NaN', 0, 0, 'a', 'a', {}, {}];
+var arr = [1, 1, 'true', 'true', true, true, 15, 15, false, false, undefined, undefined, null, null, NaN, NaN, 'NaN', 0, 0, 'a', 'a', {}, {}]
 console.log(unique(arr))
 
 function unique(arr) {
@@ -20,7 +20,7 @@ function unique(arr) {
     for (var j = i + 1; j < arr.length; j++) {
       if (arr[i] === arr[j]) {
         arr.splice(j, 1)
-        j--;
+        j--
       }
     }
   }
@@ -32,10 +32,11 @@ function unique(arr) {
     console.log('type error!')
     return
   }
-  var array = [];
+  var array = []
   for (var i = 0; i < arr.length; i++) {
-    if (!array.includes(arr[i])) {//includes 检测数组是否有某个值
-      array.push(arr[i]);
+    if (!array.includes(arr[i])) {
+      //includes 检测数组是否有某个值
+      array.push(arr[i])
     }
   }
   return array

@@ -68,7 +68,7 @@
           }
           // console.log(timer);
           timer = setTimeout(() => {
-            fn.apply(fn, arguments)
+            fn.apply(this, arguments)
             timer = null
           }, delay)
         }

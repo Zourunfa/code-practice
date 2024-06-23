@@ -459,145 +459,439 @@
       // // 会把所有的回调打包成一个宏任务队列然后执行
       // btn.click()
 
-      async function async1() {
-        console.log('async1 start')
-        await async2()
-        console.log('async1 end')
-      }
-      async function async2() {
-        console.log('async2')
-      }
-      console.log('script start')
-      setTimeout(function () {
-        console.log('settimeout')
-      })
-      async1()
-      new Promise(function (resolve) {
-        console.log('promise1')
-        resolve()
-      }).then(function () {
-        console.log('promise2')
-      })
-      console.log('script end')
+      // async function async1() {
+      //   console.log('async1 start')
+      //   await async2()
+      //   console.log('async1 end')
+      // }
+      // async function async2() {
+      //   console.log('async2')
+      // }
+      // console.log('script start')
+      // setTimeout(function () {
+      //   console.log('settimeout')
+      // })
+      // async1()
+      // new Promise(function (resolve) {
+      //   console.log('promise1')
+      //   resolve()
+      // }).then(function () {
+      //   console.log('promise2')
+      // })
+      // console.log('script end')
 
       /*
-  script start
-async1 start
-async2
-promise1
-script end
-async1 end
-promise2
-settimeout
-  */
+        script start
+      async1 start
+      async2
+      promise1
+      script end
+      async1 end
+      promise2
+      settimeout
+        */
 
-      console.log('1')
+      // console.log('1')
 
       // 定义注解 setTimeout_1 用于下文使用方便
-      setTimeout(function () {
-        console.log('2')
-        process.nextTick(function () {
-          console.log('3')
-        })
-        new Promise(function (resolve) {
-          console.log('4')
-          resolve()
-        }).then(function () {
-          console.log('5')
-        })
-      })
-      process.nextTick(function () {
-        console.log('6')
-      })
-      new Promise(function (resolve) {
-        console.log('7')
-        resolve()
-      }).then(function () {
-        console.log('8')
-      })
+      // setTimeout(function () {
+      //   console.log('2')
+      //   process.nextTick(function () {
+      //     console.log('3')
+      //   })
+      //   new Promise(function (resolve) {
+      //     console.log('4')
+      //     resolve()
+      //   }).then(function () {
+      //     console.log('5')
+      //   })
+      // })
+      // process.nextTick(function () {
+      //   console.log('6')
+      // })
+      // new Promise(function (resolve) {
+      //   console.log('7')
+      //   resolve()
+      // }).then(function () {
+      //   console.log('8')
+      // })
 
-      // setTimeout_2
-      setTimeout(function () {
-        console.log('9')
-        process.nextTick(function () {
-          console.log('10')
-        })
-        new Promise(function (resolve) {
-          console.log('11')
-          resolve()
-        }).then(function () {
-          console.log('12')
-        })
-      })
+      // // setTimeout_2
+      // setTimeout(function () {
+      //   console.log('9')
+      //   process.nextTick(function () {
+      //     console.log('10')
+      //   })
+      //   new Promise(function (resolve) {
+      //     console.log('11')
+      //     resolve()
+      //   }).then(function () {
+      //     console.log('12')
+      //   })
+      // })
 
       // 1  7 6 8 2 4 3 5  9  11 10 12
       //
 
-      const promise = new Promise((resolve, reject) => {
-        resolve('10')
-      })
-        .then(res => {
-          console.log('res1:', res) //res1: hahaha
-          return 9
-        })
-        .then(res => {
-          console.log('res2:', res) //res2: 9
-          return 8
-        })
-        .then(res => {
-          console.log('res3:', res) //res3: 8
-          let promise2 = new Promise((resolve, reject) => {
-            resolve('p2')
-          }).then(res => {
-            console.log(res)
-            setTimeout(function () {
-              console.log(' ')
-            }, 0)
-          })
-        })
-      console.log('aaa')
-      setTimeout(function () {
-        console.log('setTimeout1')
-      }, 0)
+      // const promise = new Promise((resolve, reject) => {
+      //   resolve('10')
+      // })
+      //   .then(res => {
+      //     console.log('res1:', res) //res1: hahaha
+      //     return 9
+      //   })
+      //   .then(res => {
+      //     console.log('res2:', res) //res2: 9
+      //     return 8
+      //   })
+      //   .then(res => {
+      //     console.log('res3:', res) //res3: 8
+      //     let promise2 = new Promise((resolve, reject) => {
+      //       resolve('p2')
+      //     }).then(res => {
+      //       console.log(res)
+      //       setTimeout(function () {
+      //         console.log(' ')
+      //       }, 0)
+      //     })
+      //   })
+      // console.log('aaa')
+      // setTimeout(function () {
+      //   console.log('setTimeout1')
+      // }, 0)
 
-      const promise1 = new Promise((resolve, reject) => {
-        console.log('p1')
-        resolve(989)
-      })
-        .then(res => {
-          console.log(res)
-          return 990
-        })
-        .then(res => {
-          console.log(res)
-          return 991
-        })
-        .then(res => {
-          console.log(res)
-          return 0
-        })
+      // const promise1 = new Promise((resolve, reject) => {
+      //   console.log('p1')
+      //   resolve(989)
+      // })
+      //   .then(res => {
+      //     console.log(res)
+      //     return 990
+      //   })
+      //   .then(res => {
+      //     console.log(res)
+      //     return 991
+      //   })
+      //   .then(res => {
+      //     console.log(res)
+      //     return 0
+      //   })
 
       /*
-    
-    考察点 resolved后的promise对象会在这该级别事件队列结束之后才开始执行，及执行与该轮微任务队列中，始于下一级别宏任务之前
 
-执行过程：同步代码aaa-》p1-》宏任务之前把两个微任务处理掉-》res1 10-》989-》处理过程中继续产生微任务，
-继续处理-》res2 9-》990-》res 8-》991-》处理宏任务之前的微任务p2-》产生了一个宏任务setTimeout放到任务队列里-》执行宏任务，
-第一个setTimeout-》setTimeout1-》第二个setTimeout-》setTimeout2
-    */
+          考察点 resolved后的promise对象会在这该级别事件队列结束之后才开始执行，及执行与该轮微任务队列中，始于下一级别宏任务之前
+
+      执行过程：同步代码aaa-》p1-》宏任务之前把两个微任务处理掉-》res1 10-》989-》处理过程中继续产生微任务，
+      继续处理-》res2 9-》990-》res 8-》991-》处理宏任务之前的微任务p2-》产生了一个宏任务setTimeout放到任务队列里-》执行宏任务，
+      第一个setTimeout-》setTimeout1-》第二个setTimeout-》setTimeout2
+          */
       /*输出结果：
-aaa
-p1
-res1: 10
-989
-res2: 9
-990
-res3: 8
-991
-p2
-setTimeout1
-setTimeout2
-*/
+      aaa
+      p1
+      res1: 10
+      989
+      res2: 9
+      990
+      res3: 8
+      991
+      p2
+      setTimeout1
+      setTimeout2
+      */
+
+      // setTimeout(function () {
+      //   console.log('set1')
+      //   new Promise(function (resolve) {
+      //     resolve()
+      //   }).then(function () {
+      //     new Promise(function (resolve) {
+      //       resolve()
+      //     }).then(function () {
+      //       console.log('then4')
+      //     })
+      //     console.log('then2')
+      //   })
+      // })
+
+      // new Promise(function (resolve) {
+      //   console.log('pr1')
+      //   resolve()
+      // }).then(function () {
+      //   console.log('then1')
+      // })
+
+      // setTimeout(function () {
+      //   console.log('set2')
+      // })
+
+      // console.log(2)
+
+      // queueMicrotask(() => {
+      //   console.log('queueMicrotask1')
+      // })
+
+      // new Promise(function (resolve) {
+      //   resolve()
+      // }).then(function () {
+      //   console.log('then3')
+      // })
+
+      //   console.log('set2')
+      // pr1 2  then1  queueMicrotask1 then3 set1  then2  then4  set2
+
+      // Function.prototype.customeBind = function (thisArg, ...list) {
+      //   let self = this // 目标函数
+
+      //   // 自己实现的bind函数，如果把返回的新函数当成了构造函数，此时会遇到问题，
+      //   // 就是找不到目标函数原型上的方法
+      //   // 解决：让新函数继承目标函数的原型
+      //   let Bound = function (...arg2) {
+      //     self.apply(thisArg, [...list, ...arg2])
+      //   }
+      //   // 以某个对象作为原型创建一个新的对象出来
+      //   Bound.prototype = Object.create(self.prototype)
+      //   Bound.prototype.custructor = self
+
+      //   return Bound
+      // }
+
+      // function func(...arg) {
+      //   console.log('答案是我，我是func')
+      //   console.log(this) //this已经改变，指向{a:1}
+      //   console.log(arg) //{1,2,3,4,5,6,7,8}
+      //   console.log('答案是我，我是func')
+      // }
+
+      // func.prototype.miaov = function () {
+      //   console.log(this)
+      // }
+
+      // // let newFunc = func.bind({ a: 1 }, 1, 2, 3)
+      // // newFunc()
+      // let newFunc2 = func.customeBind({ a: 1 }, 1, 2, 3, 4)
+      // newFunc2()
+      // // console.log('原生------------------')
+      // // let f1 = new newFunc(5, 6, 7, 8)
+      // // console.log(f1.miaov)
+
+      // Function.prototype.myBind = function (thisObj, ...list) {
+      //   let self = this
+
+      //   let Bound = function (...list2) {
+      //     return Bound.apply(thisObj, [...list, ...list2])
+      //   }
+      //   Bound.prototype = Object.create(self.prototype)
+      //   Bound.prototype.constructor = self
+      //   return Bound
+      // }
+
+      // Object.myAssign = function (target, ...source) {
+      //   if (target == null) {
+      //     throw new TypeError("target Object can't be null")
+      //   }
+
+      //   let res = Object(target)
+      //   source.forEach(obj => {
+      //     if (obj != null) {
+      //       for (let key in obj) {
+      //         if (obj.hasOwnProperty(key)) {
+      //           res[key] = obj[key]
+      //         }
+      //       }
+      //     }
+      //   })
+      // }
+
+      // const a = {
+      //   x: 1,
+      //   y: {
+      //     z: 1,
+      //   },
+      // }
+
+      // const b = {
+      //   x: 2,
+      //   name: 'af',
+      //   hobbies: {
+      //     sports: 'basketball',
+      //     music: {
+      //       style: ['fuck', 'blues'],
+      //       instruments: ['guitar'],
+      //     },
+      //   },
+      // }
+
+      // Object.assign(a, b);
+      // Object.myAssign(a, b)
+      // console.log(a)
+
+      // str.replace(/^\s+|\s+$/g, '')
+
+      // function currying(fn) {
+      //   return function curry(...args) {
+      //     if (fn.length > args.length) {
+      //       return fn.apply(this, [...args, ...moreArgs])
+      //     } else {
+      //       return function (...moreArgs) {
+      //         return curry.apply(this, [...args])
+      //       }
+      //     }
+      //   }
+      // }
+
+      // const arr = ['C2', 'A1', 'B2', 'C3', 'B1']
+
+      // function fn(arr) {
+      //   arr.sort((a, b) => {
+      //     return b[0].charCodeAt() - a[0].charCodeAt()
+      //   })
+
+      //   arr.sort((a, b) => {
+      //     if (a[0] === b[0]) {
+      //       return a[1] - b[1]
+      //     }
+      //   })
+
+      //   return arr
+      // }
+
+      // console.log(fn(arr))
+
+      // \w 匹配字母数字下划线
+      // 下划线转换驼峰
+      // function toHump(name) {
+      //   return name.replace(/\-(\w)/g, function (all, letter) {
+      //     console.log(all, letter, '--all')
+      //     return letter.toUpperCase()
+      //   })
+      // }
+      // // 驼峰转换下划线
+      // function toLine(name) {
+      //   return name.replace(/([A-Z])/g, '_$1').toLowerCase()
+      // }
+
+      // // 测试
+      // // let a = 'a_b2_345_c2345'
+      // // console.log(toHump(a))
+
+      // // let b = 'aBdaNf'
+      // // console.log(toLine(b))
+      // console.log(toHump('font-size'))
+      // console.log(toHump('-weront-size'))
+
+      let arr = [
+        { id: 2, name: '部门B', parentId: 0 },
+        { id: 3, name: '部门C', parentId: 1 },
+        { id: 1, name: '部门A', parentId: 2 },
+        { id: 4, name: '部门D', parentId: 1 },
+        { id: 5, name: '部门E', parentId: 2 },
+        { id: 6, name: '部门F', parentId: 3 },
+        { id: 7, name: '部门G', parentId: 2 },
+        { id: 8, name: '部门H', parentId: 4 },
+      ]
+
+      // function toTree(arr, parId) {
+      //   let len = arr.length
+
+      //   let loop = parId => {
+      //     let res = []
+      //     for (let i = 0; i < len; i++) {
+      //       let item = arr[i]
+      //       if (item.parentId === parId) {
+      //         item.children = loop(item.id)
+      //         res.push(item)
+      //       }
+      //     }
+      //     return res
+      //   }
+
+      //   return loop(parId)
+      // }
+
+      // function totree(list, parId) {
+      //   let obj = {}
+      //   let result = []
+      //   //将数组中数据转为键值对结构 (这里的数组和obj会相互引用)
+      //   list.map(el => {
+      //     obj[el.id] = el
+      //   })
+      //   for (let i = 0, len = list.length; i < len; i++) {
+      //     let id = list[i].parentId
+      //     if (id == parId) {
+      //       result.push(list[i])
+      //       continue
+      //     }
+      //     if (obj[id].children) {
+      //       obj[id].children.push(list[i])
+      //     } else {
+      //       obj[id].children = [list[i]]
+      //     }
+      //   }
+      //   return result
+      // }
+      //    console.log(toTree(arr, 0))
+      let tree = [
+        {
+          id: 1,
+          name: 'text1',
+          parentId: 1,
+          children: [
+            {
+              id: 2,
+              name: 'text2',
+              parentId: 1,
+              children: [
+                {
+                  id: 4,
+                  name: 'text4',
+                  parentId: 2,
+                },
+              ],
+            },
+            {
+              id: 3,
+              name: 'text3',
+              parentId: 1,
+            },
+          ],
+        },
+      ]
+
+      // function toArray(tree) {
+      //   let stack = tree
+      //   let res = []
+      //   while (stack.length !== 0) {
+      //     let pop = stack.pop()
+      //     res.push({
+      //       id: pop.id,
+      //       name: pop.name,
+      //       parentId: pop.parentId,
+      //     })
+
+      //     let children = pop.children
+      //     if (children) {
+      //       for (let i = children.length - 1; i >= 0; i--) {
+      //         stack.push(children[i])
+      //       }
+      //     }
+      //   }
+      //   return res
+      // }
+      // console.log(toArray(tree))
+
+      // function debounce(fn, delay) {
+      //   let timer
+
+      //   return function () {
+      //     if (timer) {
+      //       clearTimeout(timer)
+      //     }
+      //     timer = setTimeout(() => {
+      //       fn.apply(this, arguments)
+      //       timer = null
+      //     }, delay)
+      //   }
+      // }
     </script>
   </body>
 </html>

@@ -87,30 +87,51 @@
 //   return quickSort(left).concat([povit], quickSort(right));
 // };
 
+// var quickSort = function (arr) {
+//   if (arr.length <= 1) {
+//     return arr;
+//   }
+
+//   var pivotIndex = Math.floor(arr.length / 2);
+
+//   var pivot = arr.splice(pivotIndex, 1)[0];
+//   console.log(pivot);
+
+//   var left = [];
+
+//   var right = [];
+
+//   for (var i = 0; i < arr.length; i++) {
+//     if (arr[i] < pivot) {
+//       left.push(arr[i]);
+//     } else {
+//       right.push(arr[i]);
+//     }
+//   }
+
+//   return quickSort(left).concat([pivot], quickSort(right));
+// };
+// let a = [5, 4, 3, 2, 1];
+// quickSort(a);
+// console.log(a);
+
 var quickSort = function (arr) {
   if (arr.length <= 1) {
-    return arr;
+    return arr
   }
 
-  var pivotIndex = Math.floor(arr.length / 2);
+  let povitIndex = Math.floor(arr.length / 2)
+  let povit = arr.splice(povitIndex, 1)[0]
 
-  var pivot = arr.splice(pivotIndex, 1)[0];
-  console.log(pivot);
-
-  var left = [];
-
-  var right = [];
-
-  for (var i = 0; i < arr.length; i++) {
-    if (arr[i] < pivot) {
-      left.push(arr[i]);
+  let left = [],
+    right = []
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] < povit) {
+      left.push(arr[i])
     } else {
-      right.push(arr[i]);
+      right.push(arr[i])
     }
   }
 
-  return quickSort(left).concat([pivot], quickSort(right));
-};
-let a = [5, 4, 3, 2, 1];
-quickSort(a);
-console.log(a);
+  return quickSort(left).concat([povit], quickSort(right))
+}
