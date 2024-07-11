@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    // let arr = [
+    //   { id: 2, name: '部门B', parentId: 0 },
+    //   { id: 3, name: '部门C', parentId: 1 },
+    //   { id: 1, name: '部门A', parentId: 2 },
+    //   { id: 4, name: '部门D', parentId: 1 },
+    //   { id: 5, name: '部门E', parentId: 2 },
+    //   { id: 6, name: '部门F', parentId: 3 },
+    //   { id: 7, name: '部门G', parentId: 2 },
+    //   { id: 8, name: '部门H', parentId: 4 },
+    // ]
+
+    // function toTree(arr, parId) {
+    //   let loop = parId => {
+    //     let result = []
+    //     arr.forEach(item => {
+    //       if (item.parentId === parId) {
+    //         item.children = loop(item.id)
+    //         result.push(item)
+    //       }
+    //     })
+    //     return result
+    //   }
+    //   return loop(parId)
+    // }
+
+    // console.log(toTree(arr, 0))
+
+    // let tree = [
+    //   {
+    //     id: 1,
+    //     name: 'text1',
+    //     parentId: 1,
+    //     children: [
+    //       {
+    //         id: 2,
+    //         name: 'text2',
+    //         parentId: 1,
+    //         children: [
+    //           {
+    //             id: 4,
+    //             name: 'text4',
+    //             parentId: 2,
+    //           },
+    //         ],
+    //       },
+    //       {
+    //         id: 3,
+    //         name: 'text3',
+    //         parentId: 1,
+    //       },
+    //     ],
+    //   },
+    // ]
+
+    // function toArray(arr) {
+    //   let stack = arr
+    //   let res = []
+
+    //   while (stack.length !== 0) {
+    //     let pop = stack.pop()
+    //     res.push({
+    //       name: pop.name,
+    //       id: pop.id,
+    //       parentId: pop.parentId,
+    //     })
+
+    //     if (pop.children) {
+    //       pop.children.forEach(item => {
+    //         stack.push(item)
+    //       })
+    //     }
+    //   }
+    //   return res
+    // }
+
+    // console.log(toArray(tree))
+
+    // function debounce(fn, delay) {
+    //   let timer = null
+
+    //   return function () {
+    //     if (timer) {
+    //       clearTimeout(timer)
+    //     }
+
+    //     let timer = setTimeout(() => {
+    //       fn.apply(this, [...arguments])
+    //       timer = null
+    //     }, delay)
+    //   }
+    // }
+
+    // function throttle(fn, delay) {
+    //   let timer = null
+
+    //   return function () {
+    //     if (timer) {
+    //       return
+    //     }
+
+    //     let timer = setTimeout(() => {
+    //       fn.apply(this, [...arguments])
+    //       timer = null
+    //     }, delay)
+    //   }
+    // }
+    // \w 匹配字母数字下划线
+
+    // let a = 'a_b2_345_c2345'
+    // console.log(toHump(a))
+
+    // function toHump(str) {
+    //   return str.toString().replace(/\_(\w)/g, function (all, p1) {
+    //     console.log(all, p1)
+    //     return p1.toUpperCase()
+    //   })
+    // }
+
+    // function New(constructor) {
+    //   let obj = {}
+    //   obj.__proto__ = constructor.prototype
+    //   let res = constructor.apply(obj, [...arguments])
+    //   return res == 'object' || res == 'function' ? res : obj
+
+    // }
+
+    // function Parent(age, name) {
+    //   this.age = age
+    //   this.name = name
+    //   this.sayAge = function () {
+    //     console.log('this.age :', this.age)
+    //   }
+    // }
+    // Parent.prototype.sayName = function () {
+    //   console.log('this.name :', this.name)
+    // }
+
+    // let son = new Parent(18, 'lining')
+    // let newSon = New(Parent, 18, 'lining')
+
+    // console.log('son :', son) // son : Parent { age: 18, name: 'lining', sayAge: [Function] }
+    // console.log('newSon :', newSon)
+
+
+    // 手写寄生组合几次
+
+    // class Child {
+    //   constructor() {
+    //     Parent.call(this)
+    //     Child.prototype = Object.create(Parent.prototype)
+    //     Child.prototype.constructor = Child
+    //   }
+    // }
+
+    // function Parent() {
+    //   this.name = 'parent'
+    // }
+
+    // function Child(name, age) {
+    //   Parent.call(this, name)
+    //   this.age = age
+    // }
+
+    // Child.prototype = Object.create(Parent.prototype)
+    // Child.prototype.constructor = Child
+
+
+
+    // function deepClone(obj) {
+    //   if (typeof obj !== 'object' || obj === null) {
+    //     return obj
+    //   }
+
+    //   if (!deepClone.cached) {
+    //     deepClone.cached = new WeakMap();
+    //   }
+    //   if (deepClone.cached.has(obj)) {
+    //     return deepClone.cached.get(obj);
+    //   }
+    //   let tmp
+
+    //   if (obj instanceof Map) {
+    //     tmp = new Map()
+    //     deepClone.cached.set(obj, tmp)
+    //     for (let [key, value] of obj) {
+    //       tmp.set(deepClone(key), deepClone(value))
+    //     }
+    //   } else if (obj instanceof Set) {
+    //     tmp = new Set()
+    //     deepClone.cached.set(obj, tmp)
+    //     for (let value of obj) {
+    //       tmp.add(deepClone(value))
+    //     }
+    //   } else if (obj instanceof RegExp) {
+    //     tmp = new RegExp(obj)
+    //     deepClone.cached.set(obj, tmp)
+    //   } else {
+    //     tmp = new obj.constructor
+    //     deepClone.cached.set(obj, tmp)
+    //     for (let key in obj) {
+    //       tmp[key] = deepClone(obj[key])
+    //     }
+    //   }
+
+    //   return tmp
+    // }
+
+    // let originalObj = {
+    //   name: 'John1',
+    //   age: 30,
+    //   regExp: /test/g,
+    //   date: new Date(),
+    //   set: new Set([1, 2, 3]),
+    //   map: new Map([
+    //     ['key1', 'value1'],
+    //     ['key2', 'value2'],
+    //   ]),
+    //   circularRef: null,
+    // }
+    // originalObj.bar = originalObj
+
+    // let newObj = deepClone(originalObj)
+    // console.log(newObj, '---newObj')
+    // let newObj2 = deepClone(originalObj)
+    // console.log(newObj2, '---newObj')
+
+    // function findArrNode(dp, value, result, arr) {
+    //   let index = dp.lastIndexOf(value)
+    //   result.unshift(arr[index])
+    //   dp.length = index + 1
+    // }
+
+
+    // function maxList(arr) {
+    //   let dp = new Array(arr.length).fill(1)
+
+    //   for (let i = 0; i < arr.length; i++) {
+    //     for (let j = 0; j < i; j++) {
+    //       if (arr[i] > arr[j]) {
+    //         dp[i] = Math.max(dp[i], dp[j] + 1)
+    //       }
+    //     }
+    //   }
+
+    //   let max = Math.max(...dp)
+    //   let res = []
+
+    //   for (let i = max; i > 0; i--) {
+    //     findArrNode(dp, i, res, arr)
+    //   }
+    //   return res
+    // }
+    // console.log(maxList([9, 1, 7, 10, 4, 8, 5, 2]))
+
+
+    // function findThree(arr, target) {
+    //   arr.sort()
+
+    //   let res = []
+
+
+    //   for (let i = 0; i < arr.length; i++) {
+    //     let left = i + 1
+    //     let right = arr.length - 1
+    //     if (i && arr[i] === arr[i - 1]) {
+    //       continue
+    //     }
+    //     while (left < right) {
+    //       let sum = arr[i] + arr[left] + arr[right]
+
+    //       if (sum < target) {
+    //         left++
+    //       } else if (sum > target) {
+    //         right--
+    //       } else {
+
+    //         res.push([arr[i], arr[left++], arr[right--]])
+
+    //         while (left < right && arr[left] === arr[left - 1]) {
+    //           left++
+    //         }
+    //         while (left < right && arr[right] === arr[right + 1]) {
+    //           right--
+    //         }
+    //       }
+    //     }
+
+    //   }
+
+    //   return res
+
+    // }
+
+    // console.log(findThree([5, 2, 1, 1, 3, 4, 6], 8));
+
+
+    // function permute(arr) {
+    //   const result = [];
+    //   debugger
+    //   function backtrack(start) {
+    //     if (start === arr.length - 1) {
+    //       result.push([...arr]);
+    //       return;
+    //     }
+
+    //     for (let i = start; i < arr.length; i++) {
+    //       [arr[start], arr[i]] = [arr[i], arr[start]]; // 交换元素
+    //       backtrack(start + 1); // 递归调用
+    //       [arr[start], arr[i]] = [arr[i], arr[start]]; // 恢复原状
+    //     }
+    //   }
+
+    //   backtrack(0);
+    //   return result;
+    // }
+
+    // // 示例用法
+    // const input = [1, 2, 3];
+    // const permutations = permute(input);
+    // console.log(permutations);
+
+
+    // Promise.resolve()
+    //   .then(function () {
+    //     console.log('promise0');
+    //   })
+    //   .then(function () {
+    //     console.log('promise5');
+    //   });
+    // setTimeout(() => {
+    //   console.log('timer1');
+    //   Promise.resolve().then(function () {
+    //     console.log('promise2');
+    //   });
+    //   Promise.resolve().then(function () {
+    //     console.log('promise4');
+    //   });
+    // }, 0);
+    // setTimeout(() => {
+    //   console.log('timer2');
+    //   Promise.resolve().then(function () {
+    //     console.log('promise3');
+    //   });
+    // }, 0);
+    // Promise.resolve().then(function () {
+    //   console.log('promise1');
+    // });
+    // console.log('start');
+
+    // 注意promise1运行在promise5的前面
+    // start promise0  promise1 promise5 timer1 promise2 promise4  timer2  promise3
+
+
+
+    // console.log('script start');
+    // async function async1() {
+    //   await async2(); // await 隐式返回promise
+    //   console.log('async1 end'); // 这里的执行时机：在执行微任务时执行
+    // }
+    // async function async2() {
+    //   console.log('async2 end'); // 这里是同步代码
+    // }
+    // async1();
+    // setTimeout(function () {
+    //   console.log('setTimeout');
+    // }, 0);
+    // new Promise((resolve) => {
+    //   console.log('Promise'); // 这里是同步代码
+    //   resolve();
+    // })
+    //   .then(function () {
+    //     console.log('promise1');
+    //   })
+    //   .then(function () {
+    //     console.log('promise2');
+    //   });
+    // console.log('script end');
+
+    // script star t async2 end Promise  script      async1 end  promise1 promise2  setTimeout
+
+
+
+    // function myFlat(arr) {
+    //   return arr.reduce((pre, cur) => {
+    //     return pre.contact(Array.isArray(cur) ? myFlat(cur) : cur)
+    //   }, [])
+    // }
+
+
+    // function compose(...funcs) {
+    //   if (funcs.length === 0) {
+    //     return
+    //   }
+    //   // 参数检查
+    //   let nofunc = funcs.find(item => typeof item !== 'function')
+
+    //   if (nofunc) {
+    //     throw new Error('参数错误')
+    //   }
+
+    //   return (...args) => {
+    //     return funcs.reduce((pre, cur) => {
+    //       return pre === args ? cur(...args) : cur(pre)
+    //     }, args)
+    //   }
+    // }
+    // function addOne(num) {
+    //   return num + 1
+    // }
+
+    // /** 数字减去十 */
+    // function subTen(num) {
+    //   return num - 10
+    // }
+
+    // /** 数字乘以二 */
+    // function double(num) {
+    //   return num * 2
+    // }
+
+    // /** 数组除以三 */
+    // function divThree(num) {
+    //   return num / 3
+    // }
+
+    // // 组成新的函数
+    // const compose1 = compose(divThree, addOne, subTen, double)
+    // // 执行新的函数
+    // console.log('compose1 result:', compose1(9))
+    // compose1 result: -12
+
+
+
+    function toSum(arr, target) {
+      let res = []
+      let map = new Map()
+      for (let i = 0; i < arr.length; i++) {
+        let diff = target - arr[i]
+        if (map.has(diff)) {
+          return [diff, arr[i]]
+        } else {
+          map.set(arr[i], i)
+        }
+      }
+      return []
+    }
+
+    console.log(twoSum([8, 2, 6, 5, 4, 1, 3], 7)); // [2, 5]
+  </script>
+</body>
+
+</html>
