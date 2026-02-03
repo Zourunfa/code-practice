@@ -1,0 +1,58 @@
+<!--
+ * @Author: wangfeng wangfeng15@yfpharmacy.com
+ * @Date: 2025-09-23 17:58:35
+ * @LastEditors: wangfeng wangfeng15@yfpharmacy.com
+ * @LastEditTime: 2025-10-13 16:13:38
+ * @FilePath: /code-practice/js_note/防抖和节流.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      input {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        border: solid 2px;
+        /* border-radius: 50%; */
+        height: 50px;
+        width: 500px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <input type="text" />
+  </body>
+  <script>
+    const inp = document.querySelector('input')
+
+    function debounced(fn, delay) {
+      let timer = null
+
+      return function (){
+        if(timer){
+          clearTimeout(timer)
+        }
+        timer = setTimeout(() => {
+          fn.apply(this, arguments)
+          timer = null
+        }, delay)
+      }
+    }
+    inp.addEventListener(
+      'keyup',
+      debounced(() => {
+        console.log(inp.value)
+      }, 1000)
+    )
+
+
+  </script>
+</html>

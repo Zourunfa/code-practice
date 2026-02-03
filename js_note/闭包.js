@@ -106,6 +106,24 @@ var Counter = (function () {
   }
 })()
 
+var Counter = (function(){
+  var privateCounter = 0
+
+  function changeBy(val) {
+    privateCounter += val
+  }
+  return {
+    increament: function () {
+      changeBy(1)
+    },
+    decrement: function () {
+      changeBy(-1)
+    },
+    value: function () {
+      return privateCounter
+    },
+  }
+})()
 console.log(Counter.value()) /* logs 0 */
 Counter.increment()
 Counter.increment()
@@ -174,3 +192,4 @@ setupHelp()
 
 例如，在创建新的对象或者类时，方法通常应该关联于对象的原型，而不是定义到对象的构造器中。原因是这将导致每次构造器被调用时，方法都会被重新赋值一次（也就是说，对于每个对象的创建，方法都会被重新赋值）。
  */
+

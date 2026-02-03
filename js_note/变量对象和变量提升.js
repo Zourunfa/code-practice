@@ -1,3 +1,11 @@
+/*
+ * @Author: wangfeng wangfeng15@yfpharmacy.com
+ * @Date: 2025-09-23 17:58:35
+ * @LastEditors: wangfeng wangfeng15@yfpharmacy.com
+ * @LastEditTime: 2025-09-29 10:06:59
+ * @FilePath: /code-practice/js_note/变量对象和变量提升.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 /**
  * 变量对象
  * 变量对象是与执行上下文相关的数据作用域，存储上了在下文中定义的变量和函数声明
@@ -57,4 +65,36 @@
  *
  *
  *
+ */
+
+
+ console.log(a); // 输出：undefined
+var a = 5;
+console.log(a); // 输出：5
+
+/**
+ * 上面代码被理解为
+ * 
+var a; // 声明被提升到顶部
+console.log(a); // 此时a是undefined
+a = 5; // 赋值留在原地
+console.log(a); // 5
+
+
+
+函数表达式：
+
+函数表达式（无论是使用var还是let/const）不会被提升。
+如果使用var声明函数表达式，那么变量名会被提升，但函数体不会。因此，在赋值之前访问会得到undefined，如果调用则会报错。
+
+
+使用let和const声明的变量：
+
+使用let和const声明的变量也存在提升，但是与var不同，它们不会被初始化为undefined，
+而且在声明之前访问会抛出引用错误（Temporal Dead Zone，简称TDZ）。
+
+从块作用域的开始到声明语句之间的区域称为暂时性死区，在这区域中访问变量会报错。
+
+console.log(x); // 报错：Cannot access 'x' before initialization
+let x = 5;
  */
