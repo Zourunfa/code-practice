@@ -202,3 +202,120 @@ function currying(fn) {
     }
   }
 }
+
+function curringHua(fn){
+  return function curry(...args){
+    if(fn.length > args.length){
+      return fn.apply(this, arg)
+    } else{
+      return function (...moreArgs){
+        return curry.apply(this, moreArgs)
+      }
+    }
+  }
+}
+
+
+function currying2(fn){
+  return function curry(...args){
+    if (fn.length >= args.length){
+      return fn.apply(this,args)
+    } else {
+      return function (...moreArgs){
+        return curry.apply(this, moreArgs)
+      }
+    }
+  }
+}
+
+
+// ============ 带详细注释的正确版本 ============
+
+/**
+ * 函数柯里化实现
+ * @param {Function} fn - 需要被柯里化的原函数
+ * @returns {Function} - 返回柯里化后的函数
+ */
+function curryingWithComments(fn) {
+  // 返回一个新的函数 curry，这个函数会收集参数
+  // 使用剩余参数 ...args 来接收所有传入的参数
+  return function curry(...args) {
+    
+    // 判断：当前收集到的参数数量是否已经满足原函数所需的参数个数
+    // fn.length 是原函数定义时的形参个数
+    // args.length 是当前已经收集到的实参个数
+    if (args.length >= fn.length) {
+      
+      // 如果参数数量已经足够，直接执行原函数
+      // 使用 apply 来调用，保持 this 指向，并传入所有收集到的参数
+      return fn.apply(this, args)
+      
+    } else {
+      
+      // 如果参数数量还不够，返回一个新函数继续收集参数
+      return function (...moreArgs) {
+        
+        // 将之前收集的参数 args 和新传入的参数 moreArgs 合并
+        // 然后递归调用 curry 函数，继续判断参数是否足够
+        // 使用 apply 保持 this 指向
+        return curry.apply(this, args.concat(moreArgs))
+      }
+    }
+  }
+}
+
+// ============ 使用示例 ============
+
+// 定义一个需要三个参数的函数
+function add(a, b, c) {
+  return a + b + c
+}
+
+// 对 add 函数进行柯里化
+const curriedAdd = curryingWithComments(add)
+
+// 可以一次传一个参数
+console.log(curriedAdd(1)(2)(3)) // 输出: 6
+
+// 也可以一次传多个参数
+console.log(curriedAdd(1, 2)(3)) // 输出: 6
+console.log(curriedAdd(1)(2, 3)) // 输出: 6
+
+// 甚至可以一次传完所有参数
+console.log(curriedAdd(1, 2, 3)) // 输出: 6
+
+
+// ============ 你原来代码的问题分析 ============
+
+/*
+你原来的代码：
+function currying(fn) {
+  return function curry(arg) {  // ❌ 问题1: 这里应该用 ...args 而不是 arg
+    if (fn.length < arg.length) {  // ❌ 问题2: 比较符号反了，应该是 args.length >= fn.length
+      return fn.apply(this, arg)
+    } else {
+      return function (...moreArgs) {
+        return curry.apply(this, moreArgs)  // ❌ 问题3: 没有合并之前的参数
+      }
+    }
+  }
+}
+
+正确的应该是：
+1. 使用 ...args 来接收多个参数
+2. 判断条件应该是 args.length >= fn.length
+3. 递归时要合并之前的参数：args.concat(moreArgs)
+*/
+
+
+function curryHua23(fn){
+  return function curry(args){
+    if(fn.length >= args.length){
+      return fn.apply(this,args)
+    }else{
+      return function(...moreArgs){
+        return curry.apply(this,moreArgs.concat(args))
+      } 
+    }
+  }
+}
