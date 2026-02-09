@@ -102,3 +102,11 @@ function unique(arr) {
     return set.has(typeof item + item) ? false : set.add(typeof item + item)
   })
 }
+
+
+function unique(arr){
+  let set = new Set()
+  return arr.filter(item =>{
+    return set.has(typeof item + item) ? false : set.add(typeof item + item)
+  })
+}
