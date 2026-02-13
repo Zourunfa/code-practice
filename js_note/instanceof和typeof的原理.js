@@ -91,3 +91,35 @@ console.log(Object.prototype.toString.call(null)); //[object Null]
 console.log( My_instanceof(1,Number));
 
 
+
+function My_instanceof(left,right){
+  let rightProto = right.prototype
+  left = left.__proto__ 
+
+  while(true){
+    if(left === null){
+      return false
+    }
+    if(left === rightProto){
+      return true
+    }
+    left = left.__proto__
+  }
+}
+
+
+
+function My_instanceof(left, right){
+  let rightProto = right.prototype
+  left = left.__proto__
+
+  while(true){
+    if (left === null){
+      return false
+    }
+    if (left === rightProto){
+      return true
+    }
+    left =  left.__proto__
+  }
+}
