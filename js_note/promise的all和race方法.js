@@ -17,7 +17,7 @@ const houdunren = new Promise((resolve, reject) => {
 });
 const hd = Promise.all([hdcms, houdunren])
   .then(results => {
-    console.log(results);
+    console.log('RESULTS',results);
   })
   .catch(msg => {
     console.log(msg);
@@ -38,6 +38,21 @@ function ajax(url) {
       }
     };
   });
+}
+
+function Ajax(url){
+  return new Promise((resolve,reject)=>{
+    let xhr = new XMLHttpRequest()
+    xhr.open('GET',url);
+    xhr.send();
+    xhr.onload = function(){
+      if(this.status === 200){
+        resolve(JSON.parse(this.response))
+      }else{
+        reject(this)
+      }
+    }
+  })
 }
 
 const api = "http://localhost:8888/php";
@@ -70,3 +85,6 @@ Promise.allSettled([p1, p2])
   .then(msg => {
     console.log(msg);
   })
+
+
+ 
