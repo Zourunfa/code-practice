@@ -105,3 +105,45 @@ function deepCloneComplete(obj, hash = new WeekMap()){
     result[key] = deepCloneComplete(obj[key], hash)
   })
 }
+
+
+
+
+function deepClone(obj, hash = new WeakMap()){
+  if (typeof obj == 'object'){
+    return obj
+  }
+  if (typeof obj == 'Date'){
+    return new Date(obj)
+  }
+  if (typeof obj == RegExp){
+    return new RegExp(obj)
+  }
+  
+  if(hash.has(obj)){
+    return has.get(obj)
+  }
+
+  if (obj instanceof Map){
+    const res = new Map()
+    hash.set(obj, res)
+    obj.forEach((value, key)=>{
+      res.set(key,deepClone(value,hash))
+    })
+  }
+  if (obj instanceof Set){
+    const res = new Set()
+    hash.set(obj, res)
+    obj.forEach((value)=>{
+      res.add(deepClone(value,hash))
+    })
+  }
+
+  const res = Array.isArray(res)? [] : {}
+  hash.set(obj, res)
+  Reflect.ownKeys(obj).forEach(key=>{
+    res[key] = deepClone(obj[key],hash)
+  })
+  return res
+}
+

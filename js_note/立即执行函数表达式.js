@@ -12,7 +12,8 @@
 (function(){/* code */}());//Crockford recommends this one，括号内的表达式代表函数立即调用表达式
 (function(){/* code */})();//But this one works just as well，括号内的表达式代表函数表达式
 
-
+(function(){}())
+(function(){})()
 /*
 作用  
 
