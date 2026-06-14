@@ -3,6 +3,9 @@
 //   return Array.from(new Set(arr))
 // }
 
+function unique(arr){
+  return Array.from(new Set(arr))
+}
 // var arr = [1,1,'true','true',true,true,15,15, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
 // console.log(unique(arr))
 
@@ -19,25 +22,51 @@
 //   return arr
 // }
 
+function unique(arr){
+  for(var i=0;i<arr.length;i++){
+    for(var j=i+1;j<arr.length;j++){
+      if(arr[i] === arr[j]){
+        arr.splice(j,1)
+        j--
+      }
+    }
+  }
+  return arr
+}
 // var arr = [1,1,'true','true',true,true,15,15, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
 // console.log(unique(arr))
 
 // 利用indexOf
-// function unique(arr){
-//   if(!Array.isArray(arr)){
-//     console.log('type err');
-//     return
-//   }
+function unique(arr){
+  if(!Array.isArray(arr)){
+    console.log('type err');
+ }
 
-//   var array = []
-//   for(var i=0;i<arr.length;i++){
-//     // indexOf第一次出现该值的索引，如果没找到返回-1
-//     if(array.indexOf(arr[i])===-1){
-//       array.push(arr[i])
-//     }
-//   }
-//   return array;
-// }
+
+  var array = []
+  for(var i=0;i<arr.length;i++){
+    // indexOf第一次出现该值的索引，如果没找到返回-1
+    if(array.indexOf(arr[i])===-1){
+      array.push(arr[i])
+    }
+  }
+  return array;
+}
+
+function unique(arr){
+  if(!Array.isArray(arr)){
+    console.log('type arr')
+  }
+
+  var array = []
+  for(var i=0;i<arr.length;i++){
+    // indexOf 第一次出现该值的索引，如果没找到返回-1
+    if(array.indexOf(arr[i] === -1)){
+      array.push(arr[i])
+    }
+  }
+  return array
+}
 
 // var arr = [1,1,'true','true',true,true,15,15,false,false, undefined,undefined, null,null, NaN, NaN,'NaN', 0, 0, 'a', 'a',{},{}];
 // console.log(unique(arr))
@@ -279,4 +308,25 @@ function unique(arr){
   return arr.filter(item=>{
     return set.has(typeof item + item) ? false : set.add(typeof item + item)
   })
+}
+
+function unique(arr){
+  let set = new Set()
+  return arr.filter(item=>{
+    return set.has(typeof item + item) ? false : set.add(typeof item + item)
+  })
+}
+function instanseOf(left,right){
+  let leftProto = left.__proto__
+  let rightProto = right.__proto__
+  let res = false
+  while(true){
+    if(leftProto.__proto__ == null) {
+      return false
+    }
+    if(leftProto = rightProto){
+      return true
+    }
+    leftProto = leftProto.__proto__ 
+  }
 }

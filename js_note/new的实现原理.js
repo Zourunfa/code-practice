@@ -36,16 +36,17 @@ function New() {
   return obj
 }
 
-// function New(){
-//   var obj = {}
-//   var Fn = [].shift.call(arguments)
-//   Fn.prototype = obj.__proto__
-//   obj.__proto__.Constructor = Fn
-
-//   Fn.apply(obj,arguments)
-//   return obj;
-
-// }
+function New() {
+  // 创建一个新对象
+  const obj = {}
+  // 获取第一个参数即为构造函数
+  const constr = [...arguments].shift()
+  // 将obj的原型指向构造函数的原型对象，这样obj就可以访问构造函数原型上的属性
+  obj.__proto__ = constr.prototype
+  // 执行构造函数
+  constr.apply(obj,[...arguments].slice(1))
+  return obj
+}
 
 function Parent(age, name) {
   this.age = age
@@ -91,4 +92,108 @@ function myNew(constructor, ...args) {
     return result
   }
   return obj
+}
+
+
+function deepCloneComplete(obj, hash = new WeakMap()){
+  // 处理null和undefined
+  if(obj === null)
+    return null
+  if(obj === undefined)
+    return undefined
+
+  // 处理基本数据类型（number string boolean symbol bigint）
+  if(typeof obj !== 'object')
+    return obj
+  // 处理date对象
+  if(obj instanceof Date)
+    return new Date(obj)
+  // 处理 RegExp 对象
+  if(obj instanceof RegExp)
+    return new RegExp(obj)
+  // 处理函数（函数一般不需要深拷贝 直接返回引用）
+  if(typeof obj === 'function')
+    return obj
+
+  // 处理循环引用（使用WeakMap存储已经拷贝的对象）
+  if(hash.has(obj))
+    return hash.get(obj)
+
+  // 处理Map
+  if(obj instanceof Map){
+    const result = new Map()
+    hash.set(obj,result)
+    obj.forEach((value,key)=>{
+      result.set(key, deepCloneComplete(value,hash))
+    })
+    return result
+  }
+
+  if (obj instanceof Set){
+    const result = new Set()
+    hash.set(obj,result)
+    obj.forEach(value =>{
+      result.add(deepCloneComplete(value,hash))
+    })
+    return result
+  }
+  // 处理数组和普通对象
+  const result = Array.isArray(obj) ? [] : {}
+  // 将当前对象存入hash 用于处理循环引用
+  hash.set(obj,result)
+
+  Reflect.ownKeys(obj).forEach(key=>{
+    result[key] = deepCloneComplete(obj[key],hash)
+  })
+  return result
+
+}
+
+function myNew(constructor,...args){
+  const obj = {}
+  obj.__proto__ = constructor.prototype
+  let result = constructor.call(obj,...args)
+  if(result && (typeof result === 'object' || typeof result === 'function')){
+    return result 
+  }
+  return obj
+}
+
+function deepCloneSimple(obj , hash = new WeakMap){
+  if(typeof obj === 'null' || typeof obj === 'undefined'){
+    return obj
+  }
+  if(obj instanceof Date){
+    return new Date(obj)
+  }
+  if( obj instanceof RegExp){
+    return new RegExp(obj)
+  }
+
+  if(hash.has(obj)){
+    return hash.get(obj)
+  }
+  let result
+  if(obj instanceof Map){
+    result = new Map()
+    hash.set(obj, result)
+    obj.forEach((value,key)=>{
+      result.set(key, deepCloneComplete(value,hash))
+    })
+  }
+
+  if(obj instanceof Set){
+    result = new Set()
+    hash.set(obj, result)
+    obj.forEach((value,key)=>{
+      result.add(deepCloneComplete(value,hash))
+    })   
+  }
+
+  result = Array.isArray(obj) ? [] : {}
+  
+  Reflect.ownKeys(obj).forEach(key=>{
+    result[key] = deepCloneComplete(obj[key],hash)
+  })
+  return result
 }

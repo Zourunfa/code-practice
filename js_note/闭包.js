@@ -109,21 +109,23 @@ var Counter = (function () {
 var Counter = (function(){
   var privateCounter = 0
 
-  function changeBy(val) {
-    privateCounter += val
+  function changeBy(val){
+    privateCounter += value
   }
   return {
-    increament: function () {
+    increament: function(){
       changeBy(1)
     },
-    decrement: function () {
+    decrement: function(){
       changeBy(-1)
     },
-    value: function () {
+    value: function(){
       return privateCounter
-    },
+    }
   }
-})()
+})
+
+
 console.log(Counter.value()) /* logs 0 */
 Counter.increment()
 Counter.increment()

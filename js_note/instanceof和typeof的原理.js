@@ -123,3 +123,19 @@ function My_instanceof(left, right){
     left =  left.__proto__
   }
 }
+
+
+function My_instanceof_one(left,right){
+  let left_proto = left.__proto__
+  let rightPrototype = right.prototype
+
+  while(true){
+    if ( left_proto === rightPrototype ){
+      return true
+    }
+    if ( left_proto === null ){
+      return false
+    }
+    left = left.__proto__
+  }
+}
